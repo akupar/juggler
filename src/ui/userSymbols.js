@@ -7,8 +7,6 @@ import { $mathml } from "./mathml";
 function showUserSymbols() {
     const $table = $("#user-symbols").find("mtable");
 
-
-    console.log(JSON.stringify(symbolStore.buckets, null, 2));
     $table.html("");
     $table.append(
         symbolStore.buckets["(sym)"] ? symbolStore.buckets["(sym)"].map((symbolEquation) => {

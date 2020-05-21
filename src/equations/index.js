@@ -28,10 +28,6 @@ import "./div.js";           // operators / and :
 import store from "./store";
 export default store;
 
-console.log("HELLO");
-
-
-
 // For debugging
 window.equations = store;
 

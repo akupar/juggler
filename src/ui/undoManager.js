@@ -27,7 +27,6 @@ function redo() {
 
 $(document).ready(function () {
     window.undoBuffer = new UndoBuffer();
-    console.log("created undo buffer");
     
     $(".undo-button").on("click", undo);
 

@@ -22,7 +22,7 @@ function getNearestBlock(elem) {
     if ( !elem || elem === document.body ) {
         return null;
     }
-    //console.log("ELEM:", elem);
+    
     if ( elem.classList.contains("block") ) {
         return elem;
     }
@@ -31,7 +31,6 @@ function getNearestBlock(elem) {
 
 
 function setElement(elem) {
-    console.log("setElem");
     $("#canvas").html(elem);
 }
 
@@ -40,11 +39,11 @@ function setElement(elem) {
  **/
 function setEquation(equation, skipUndo) {
     const elem = format(equation);
-    console.log("gotElem");
+
     if ( !skipUndo ) {
         window.undoBuffer.push(equation);
     }
-    console.log("gonnasetElem");
+
     setElement(elem);
 }
 

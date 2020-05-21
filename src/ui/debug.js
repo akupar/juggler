@@ -16,7 +16,6 @@ export function showBucketData(buckets) {
                 });
         })
     );
-    console.log("BUCKE DONE");
 }
 
 

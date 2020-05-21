@@ -215,7 +215,6 @@ export function match(formula, input, vars = {}) {
                 score+=5;
             }
             vars[name] = input;
-            console.log("got var:", name, vars[name]);
         }
 
     } else if ( typeof(formula) === typeof(input) ) {

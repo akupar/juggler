@@ -49,8 +49,6 @@ function selectNextBlock() {
         return;
     }
 
-    //console.log("next:", next);
-
     selectBlock.bind(next)();
 }
 
@@ -64,8 +62,6 @@ function selectPreviousBlock() {
     if ( !previous ) {
         return;
     }
-
-    //console.log("previous:", previous);
 
     selectBlock.bind(previous)();
 }
@@ -99,19 +95,12 @@ $(document).ready(function () {
     debug.showExpression(input);
     userSymbols.showUserSymbols();
 
-
-    console.log("XX");
-
-
     var input = {
         oper: "/",
         0: auto(3),
         1: auto(4)
     };
-    console.log("XX");
-    canvas.setEquation(input);
-    console.log("XX2");
 
-    
+    canvas.setEquation(input);
 });
 
