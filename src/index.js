@@ -1,24 +1,104 @@
 import $ from "jquery";
 import "./style.css";
 import { auto } from "./types";
-//import userSymbols from "./ui/userSymbols";
-//import symbolStore from "./equations/userSymbols";
-import "./ui/undoManager";
+import userSymbols from "./ui/userSymbols";
+import undoManager from "./ui/undoManager";
 import canvas from "./ui/canvas";
-//import debug from "./ui/debug";
+import debug from "./ui/debug";
 
-//import {
-//    getParentBlock,
-//    getNextBlock,
-//    getPreviousBlock,
-//    selectBlock
-//} from "./ui/block";
+import {
+    getParentBlock,
+    getNextBlock,
+    getPreviousBlock,
+    selectBlock
+} from "./ui/block";
+
+function getSelectedBlock() {
+    const selecteds = document.getElementsByClassName("selected");
+    if ( selecteds.length === 0 ) {
+        return null;
+    }
+
+    console.assert(selecteds.length === 1, "More than one selected!");
+    
+    return selecteds[0];
+}
+
+function selectParentBlock() {
+    const selected = getSelectedBlock();
+    if ( !selected ) {
+        return;
+    }
+    
+    const parent = getParentBlock.bind(selected)();
+    if ( !parent ) {
+        return;
+    }
+
+    selectBlock.bind(parent)();
+}
+
+function selectNextBlock() {
+    const selected = getSelectedBlock();
+    if ( !selected ) {
+        return;
+    }
+
+    const next = getNextBlock.bind(selected)();
+    if ( !next ) {
+        return;
+    }
+
+    //console.log("next:", next);
+
+    selectBlock.bind(next)();
+}
+
+function selectPreviousBlock() {
+    const selected = getSelectedBlock();
+    if ( !selected ) {
+        return;
+    }
+
+    const previous = getPreviousBlock.bind(selected)();
+    if ( !previous ) {
+        return;
+    }
+
+    //console.log("previous:", previous);
+
+    selectBlock.bind(previous)();
+}
+
+$(document).on("keypress", function ($event) {
+    //console.log("KEYPRESS!", $event);
+    switch ( $event.originalEvent.key ) {
+        case "u":
+        case "^":
+            selectParentBlock();
+            break;
+        case "n":
+            selectNextBlock();
+            break;
+        case "p":
+            selectPreviousBlock();
+            break;
+        case "z":
+            undoManager.undo();
+            break;
+        case "Z":
+            undoManager.redo();
+            break;
+    }
+});
 
 
 
 $(document).ready(function () {
-    //debug.showBucketData(window.equations.buckets);
-    //debug.showExpression(input);
+    debug.showBucketData(window.equations.buckets);
+    debug.showExpression(input);
+    userSymbols.showUserSymbols();
+
 
     console.log("XX");
 
