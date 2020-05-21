@@ -6,7 +6,7 @@
 /**
  * Matches any content inside __match_up pragma.
  **/
-//export const any = "";
+export const any = "";
 
 /**
  * Adds the __match_up pragma to object `obj` with name `variableName`.

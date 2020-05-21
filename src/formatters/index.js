@@ -16,7 +16,6 @@ import formatters from "./store";
 import { $mathml } from "../ui/mathml";
 import { createBlock } from "../ui/block";
 import { bind } from "../util";
-import { contains } from "../eq";
 
 //
 export default formatters;
@@ -69,26 +68,26 @@ formatters.addEquation({
     }
 });
 
+
 /**
- * Any element with display set
+ * Any element with display=approx set
  **/
-formatters.addEquation({
-    oper: "->",
-    0: contains("a", {
-        display: "x"
-    }),
-    1: (vars) => {
-        let x = vars["x"],
-            self = createBlock(
-                "mn",
-                [ x ],
-                vars["a"]
-            );
+formatters.addEquation2({
+    0: "a",
+    1: ({ a }) => {
+        console.log("display formatter:", a);
         
-        
-        return self;
+        return createBlock(
+            "mn",
+            [ a._approx.toString().substring(0, 5) + "..." ],
+            a
+        );
+    },
+    where: ({ a }) => {
+        return ("_approx" in a) && (("display" in a) && a.display === "approx");
     }
 });
+
 
 
 
@@ -97,20 +96,23 @@ formatters.addEquation({
  **/
 formatters.addEquation({
     oper: "->",
-    0: {
-        item: "(sym)",
-        0: "a",
-    },
-    1: (vars) => {
-        let a = vars["a"],
-            self = createBlock(
-                "mi",
-                [ a.replace(/^\?/, "") ],
-                {
-                    item: "(sym)",
-                    0: vars["a"]
-                }
-            );
+        0: {
+            item: "(sym)",
+            0: "a",
+            _approx: "approx",
+            display: "display"
+        },
+        1: ({ a, approx, display }) => {
+        let self = createBlock(
+            "mi",
+            [ a.replace(/^\?/, "") ],
+            {
+                item: "(sym)",
+                0: a,
+                _approx: approx,
+                display: display
+            }
+        );
 
         self.classList.add("symbol");
         return self;
@@ -563,6 +565,47 @@ formatters.addEquation({
 
         
         return self;
+    }
+});
+
+
+/**
+ * Division operator / -> fraction display.
+ **/
+formatters.addEquation2({
+    0: {
+        oper: "/",
+        0: "a",
+        1: "b" ,
+        _approx: "X",
+        display: "D"
+    },
+    1: (vars) => {
+        let a = format(vars["a"]),
+            b = format(vars["b"]);
+        
+        if ( vars["D"] === "exact" ) {
+            return createBlock(
+                "mfrac",
+                [ $mathml("mpadded").append(a), $mathml("mpadded").append(b) ],
+                {
+                    oper: "/",
+                    0: "#" + a.getAttribute("id"),
+                    1: "#" + b.getAttribute("id"),
+                    _approx: vars["X"]
+                }
+            );
+        } else {
+            return createBlock(
+                "mfrac",
+                [ $mathml("mpadded").append(a), $mathml("mpadded").append(b) ],
+                vars["X"].toString().substring(0, 5) + "..."
+            );
+            
+        }
+    },
+    where: ({ D }) => {
+        return (D === "exact");
     }
 });
 
@@ -1208,3 +1251,7 @@ formatters.addEquation({
     }
 });
 
+
+
+
+console.log("formatters loaded");

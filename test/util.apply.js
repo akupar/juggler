@@ -2,6 +2,7 @@ require('esm');
 
 const assert = require('assert');
 const util   = require('../src/util');
+const eq     = require('../src/eq');
 
 describe('util.apply', function() {
     
@@ -127,7 +128,7 @@ describe('util.apply', function() {
                 },
                 1: {
                     __match_up: "b",
-                    value: null
+                    value: eq.any
                 }
             }, { "a": { type: "int", val: 5 }, "b": 6 });
             

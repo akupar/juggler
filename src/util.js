@@ -130,7 +130,8 @@ export function match(formula, input, vars = {}) {
     //if ( JSON.stringify(input||"").indexOf("(xxx)") > -1 ) {
     //        debug = true;
     //    }
-    if ( formula && formula.__match_up || formula.oper === "/" || formula === "approx" ) {
+    if ( formula
+      && (formula.__match_up || formula.oper === "/" || formula === "approx") ) {
         //debug  = true;
     }
     
@@ -141,8 +142,6 @@ export function match(formula, input, vars = {}) {
 
     if ( formula === any ) { // jokerimerkki __match_up-pragman sisällä, huom. muualla hävittää arvon!
         console.log(" any");
-        
-        
         return 1;
         
     } else if ( isVariable(formula) ) {
@@ -183,7 +182,7 @@ export function match(formula, input, vars = {}) {
             console.log("EXPRSSION");
         }
         const keys_f = getKeys(formula).filter((key) => ! key.startsWith("__")),
-            keys_i = getKeys(input).filter((key) => ! key.startsWith("__"));
+              keys_i = getKeys(input).filter((key) => ! key.startsWith("__"));
         
         if ( !formula.__match_up &&  !listsEqual(keys_f, keys_i) ) {
             //console.log("ERI KEYS: ", keys_f, keys_i);
@@ -195,7 +194,11 @@ export function match(formula, input, vars = {}) {
                 console.log("KEY:", key, JSON.stringify(formula[key]), JSON.stringify(input[key]), JSON.stringify(vars));
             }
 
+            if ( input[key] === undefined ) {
+                return 0;
+            }
             const subScore = formula[key] === any ? 1 : match(formula[key], input[key], vars);
+            console.assert(typeof(subScore) === "number");
             if ( subScore === 0 ) {
                 return 0;
             }
@@ -227,7 +230,7 @@ export function match(formula, input, vars = {}) {
     } 
 
     if ( debug ) {
-        console.log("match out");
+        console.log("match out, score", score);
     }
     return score;
 }
@@ -300,16 +303,14 @@ export function transform2(equationIn, equationOut, expression, vars = {}) {
     let debug = false;
     if ( JSON.stringify(equationIn).indexOf("__match_up") >= 0 || equationIn.oper === "/" ) {
         //debug = false;
-        console.log("TR2:", JSON.stringify(equationIn));
+        //console.log("TR2:", JSON.stringify(equationIn));
     }
-
-    
 
     if ( ! match(equationIn, expression, vars) ) {
         if ( debug ) {
             console.log("NO MATCH");
         }
-        throw "Not matching";
+        throw new Error("Not matching");
     }
     if ( debug ) {
         console.log("MATCH");
@@ -323,26 +324,25 @@ export function transform(equation, expression, vars = {}) {
 }
 
 
-/* function bind(symbols, expr) {
- *     var symbols2 = [];
- *     if ( typeof(symbols) !== "array" ) {
- *         symbols2[0] = symbols;
- *     } else {
- *         symbols2 = symbols;
- *     }
- *     //console.log("SYMBOLS:", symbols2);
- *     var vars = {};
- * 
- *     for ( item of symbols2 ) {
- *         vars[item.symbol] = item.val;
- *     }
- *     ////console.log("VARS:", vars);
- *     
- *     var n = apply(expr, vars);
- * 
- *     return n;
- * }
- *  */
+export function bind(symbols, expr) {
+    var symbols2 = [];
+    if ( typeof(symbols) !== "object" ) {
+        symbols2[0] = symbols;
+    } else {
+        symbols2 = symbols;
+    }
+
+    var vars = {};
+    
+    for ( let item of symbols2 ) {
+        vars[item.symbol] = item.val;
+    }
+    
+    var n = apply(expr, vars);
+    
+    return n;
+}
+
 
 export function deepCopy(obj) {
     if ( obj === null

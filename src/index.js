@@ -92,15 +92,26 @@ $(document).on("keypress", function ($event) {
 
 $(document).ready(function () {
     debug.showBucketData(window.equations.buckets);
-    debug.showExpression(input);
     userSymbols.showUserSymbols();
 
     var input = {
-        oper: "/",
-        0: auto(3),
-        1: auto(4)
+        oper: "+",
+        0: auto(7),
+        1: {
+            oper: "/",
+            0: auto(3),
+            1: {
+                item: "(sym)",
+                0: "?π",
+                _approx: 3.14,
+                display: "exact"
+            }
+        }
     };
 
+    debug.showExpression(null, input);
+
     canvas.setEquation(input);
+    console.log("main done");
 });
 

@@ -20,9 +20,37 @@ export function showBucketData(buckets) {
 
 
 
-export function showExpression(expr) {
+export function showExpression(elem, expr) {
+    let bucket = "";
+    
+    let elemNo = "";
+
+    let elemData;
+    if ( elem ) {
+        elemNo = "#" + elem.id;
+        elemData = $(elem).attr("expr");
+    }
+
+
+
+
+    let text = "";
+    if ( elemData ) {
+        text = JSON.stringify(JSON.parse(elemData), null, 2);
+    }
+    
+    let expandedData = "";
+    if ( expr ) {
+        expandedData = JSON.stringify(expr, null, 2);
+        bucket = window.equations.getAddr(expr);
+    }
+    
     $("#status-expression").html(
-        JSON.stringify(expr, null, 2)
+        elemNo + "; " + bucket
+        + "<hr/>"
+        + text
+        + "<hr/>"
+        + expandedData
     );
 }
 
@@ -30,7 +58,7 @@ export function showExpression(expr) {
 $(document).ready(function() {
     $(".debug").each(function () {
         const $parent = $(this);
-        const $cb = $("<input type=\"checkbox\"/>").prop("checked", true).on("change", function () {
+        const $cb = $("<input type='checkbox'/>").prop("checked", true).on("change", function () {
             $parent.css("display", $(this).is(":checked") ? "block" : "none");
         });
         $(this).before($cb);

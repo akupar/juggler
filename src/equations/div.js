@@ -2,7 +2,6 @@ import store from "./store";
 import { setDisplayTextAndReturn } from "../util/functions";
 import { chomp, suppressRepeatingDigits } from "../util/number";
 import { auto, int } from "../types";
-import { contains } from "../eq";
 
 // a/(a/b) = b
 store.addEquation({
@@ -512,58 +511,53 @@ store.addEquation({
 
 
 // a / summary(b) = summary(a / b)
-store.addEquation({
-    oper: "->",
+/* store.addEquation({
+ *     oper: "->",
+ *     0: {
+ *         oper: "/",
+ *         0: int("a"),
+ *         1: {
+ *             oper: "(summary)",
+ *             approx: "approx",
+ *             display: "approx",
+ *             0: "b"
+ *         }
+ *     },
+ *     1: function c (vars) {
+ *         return {
+ *             oper: "(summary)",
+ *             0: {
+ *                 oper: "/",
+ *                 0: int(vars["a"]),
+ *                 1: vars["b"]
+ *             },
+ *             approx: (vars["a"] / vars["approx"]),
+ *             display: (vars["a"] / vars["approx"]) + "..."
+ *         };
+ *     }
+ * },
+ * "Jaa luku ja yhteenvetoluvulla"
+ * );
+ *  */
+
+
+store.addEquation2({
     0: {
         oper: "/",
         0: int("a"),
-        1: {
-            oper: "(summary)",
-            approx: "approx",
-            display: "approximation",
-            0: "b"
-        }
+        1: "b"
     },
-    1: function c (vars) {
-        return {
-            oper: "(summary)",
-            0: {
-                oper: "/",
-                0: int(vars["a"]),
-                1: vars["b"]
-            },
-            approx: (vars["a"] / vars["approx"]),
-            display: (vars["a"] / vars["approx"]) + "..."
-        };
-    }
-},
-"Jaa luku ja yhteenvetoluvulla"
-);
-
-
-
-
-// a / b.approx = (a / b).approx
-store.addEquation({
-    oper: "->",
-    0: {
-        oper: "/",
-        0: int("a"),
-        1: contains("b", {
-            approx: "b_approx"
-        })
-    },
-    1: function c (vars) {
-        console.log("HELLO");
+    1: function c({ a, b }) {
         return {
             oper: "/",
-            0: int(vars["a"]),
-            1: vars["b"],
-            approx: vars["a"] / vars["b"].approx,
-            display: (vars["a"] / vars["b"].approx).toString().substring(0, 5)
+            0: int(a),
+            1: b,
+            _approx: a / b._approx,
+            display: "approx"
         };
-    }
-},
-"TÄMÄ Jaa luku ja yhteenvetoluvulla"
-);
-
+    },
+    where: ({ b }) => {
+        return ("_approx" in b);
+    },
+    desc: "Aseta display-jäsen"
+});

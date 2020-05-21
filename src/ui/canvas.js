@@ -113,3 +113,5 @@ export default {
     getEquationOfSelected,
     replaceSelectionWithEquation
 };
+
+console.log("canvas loaded");

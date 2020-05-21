@@ -1,5 +1,5 @@
 import store from "./store";
-import { auto } from "../types";
+import { auto, int } from "../types";
 
 // +a = a
 store.addEquation({
@@ -10,7 +10,7 @@ store.addEquation({
     },
     1: "x"
 },
-"Toggle plus sign"
+                  "Toggle plus sign"
 );
 
 // a + 0 = a
@@ -23,8 +23,8 @@ store.addEquation({
     },
     1: "a"
 },
-"Yksinkertaista nollan lisäys",
-"Lisää 0"
+                  "Yksinkertaista nollan lisäys",
+                  "Lisää 0"
 );
 
 // 0 + a = 0
@@ -37,8 +37,8 @@ store.addEquation({
     },
     1: "a"
 },
-"Yksinkertaista nollan lisäys",
-"Lisää 0"
+                  "Yksinkertaista nollan lisäys",
+                  "Lisää 0"
 );
 
 //(a + b) + c = b + (a + c)
@@ -166,6 +166,30 @@ store.addEquation({
         };
     }
 },
-"Laske yhteen luku ja yhteenvetoluku"
+                  "Laske yhteen luku ja yhteenvetoluku"
 );
+
+
+// a + b.approx = (a + b).approx
+store.addEquation2({
+    0: {
+        oper: "+",
+        0: int("a"),
+        1: "b"
+    },
+    1: function c({ a, b }) {
+        return {
+            oper: "+",
+            0: int(a),
+            1: b,
+            _approx: a + b._approx,
+            display: "approx"
+        };
+    },
+    where: ({ b }) => {
+        return ("_approx" in b);
+    },
+    desc: "Aseta display-jäsen +"
+});
+
 

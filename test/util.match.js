@@ -1,57 +1,58 @@
-const assert = require('assert');
-const util   = require('../src/util');
-const eq     = require('../src/eq');
+const assert = require("assert");
+const util   = require("../src/util");
+const eq     = require("../src/eq");
+const types  = require("../src/types");
 
-describe('util.match', function() {
-    describe('simple variable', function() {
-        it('should match integer zero', function() {
+describe("util.match", function() {
+    describe("simple variable", function() {
+        it("should match integer zero", function() {
             const vars = {};
             assert.equal(util.match("a", 0, vars), 1);
             assert.deepEqual(vars, { "a": 0 });
         });
 
-        it('should match integers', function() {
+        it("should match integers", function() {
             const vars = {};
             assert.equal(util.match("a", 3, vars), 1);
             assert.deepEqual(vars, { "a": 3 });
         });
 
-        it('should match symbols', function() {
+        it("should match symbols", function() {
             const vars = {};
             assert.equal(util.match("a", "a", vars), 1);
             // TODO pitääkö tulla muuttujaksi?
             assert.deepEqual(vars, { "a": "a" });
         });
         
-        it('should match val expressions', function() {
+        it("should match val expressions", function() {
             const vars = {};
             assert.equal(util.match("a", { oper: "(val)", 0: 3 }, vars), 1);
             assert.deepEqual(vars, { "a": { oper: "(val)", 0: 3 } });
         });
         
-        it('should match complex expressions', function() {
+        it("should match complex expressions", function() {
             const vars = {};
             assert.equal(util.match("a", { oper: "+", 0: { oper: "(val)", 0: 3 }, 1: { oper: "(val)", 0: 3 } }, vars), 1);
             assert.deepEqual(vars, { "a": { oper: "+", 0: { oper: "(val)", 0: 3 }, 1: { oper: "(val)", 0: 3 } } });
         });
     });
 
-    describe('simple object', function() {
-        it('should match similar', function() {
+    describe("simple object", function() {
+        it("should match similar", function() {
             const vars = {};
             const score = util.match({ oper: "(val)", 0: "a" }, { oper: "(val)", 0: 3 }, vars);
             assert.equal(score > 0, true);
             assert.deepEqual(vars, { "a": 3 });
         });
         
-        it('shouldn\'t match object with different operator', function() {
+        it("shouldn't match object with different operator", function() {
             const vars = {};
             assert.equal(util.match({ oper: "(val)", 0: "a" }, { oper: "(xxx)", 0: 3 }, vars), 0);
         });
     });
 
-    describe('complex object', function() {
-        it('should match similar', function() {
+    describe("complex object", function() {
+        it("should match similar", function() {
             const vars = {};
             const score = util.match(
                 { oper: "+", 0: { oper: "(val)", 0: "a" }, 1: "b" },
@@ -63,12 +64,12 @@ describe('util.match', function() {
             assert.deepEqual(vars, { "a": 3, "b": 4 });
         });
         
-        it('shouldn\'t match object with different operator', function() {
+        it("shouldn't match object with different operator", function() {
             const vars = {};
             assert.equal(util.match({ oper: "+", 0: "a", 1: "b" }, { oper: "-", 0: 3, 1: 4 }, vars), 0);
         });
 
-        it('should match variables on different levels', function() {
+        it("should match variables on different levels", function() {
             const vars = {};
             const score = util.match(
                 { oper: "+", 0: { oper: "(val)", 0: "a" }, 1: "b" },
@@ -81,7 +82,7 @@ describe('util.match', function() {
             assert.deepEqual(vars, { "a": 3, "b": { oper: "(val)", 0: 4 } });
         });
 
-        it('should accept matching variables', function() {
+        it("should accept matching variables", function() {
             const vars = {};
             const score = util.match(
                 { oper: "+", 0: { oper: "(val)", 0: "a" }, 1: "a" },
@@ -93,7 +94,7 @@ describe('util.match', function() {
             assert.deepEqual(vars, { "a": 3 });
         });
 
-        it('should accept matching complex variables', function() {
+        it("should accept matching complex variables", function() {
             const vars = {};
             const score = util.match(
                 { oper: "+", 0: "a", 1: "a" },
@@ -105,7 +106,7 @@ describe('util.match', function() {
             assert.deepEqual(vars, { "a": { oper: "(val)", 0: 3 } });
         });
         
-        it('should reject non matching variables', function() {
+        it("should reject non matching variables", function() {
             const vars = {};
             assert.equal(
                 util.match(
@@ -117,7 +118,7 @@ describe('util.match', function() {
             );
         });
 
-        it('should reject non matching variables', function() {
+        it("should reject non matching variables", function() {
             const vars = { "a": "b" };
             assert.equal(
                 util.match(
@@ -129,7 +130,7 @@ describe('util.match', function() {
             );
         });
 
-        it('should reject non matching complex variables', function() {
+        it("should reject non matching complex variables", function() {
             const vars = {};
             assert.equal(
                 util.match(
@@ -141,11 +142,53 @@ describe('util.match', function() {
             );
         });
 
+        it("should match this", function() {
+            const vars = {};
+            const score = util.match(
+                "a",
+                {
+                    "0": {
+                        "0": 3,
+                        "item": "(val)"
+                    },
+                    "1": {
+                        "0": "?π",
+                        "item": "(sym)",
+                        "_approx": 3.14,
+                        "display": "exact"
+                    },
+                    "oper": "/",
+                    "_approx": 0.9554140127388535,
+                    "display": "approx"
+                },
+                vars
+            );
+            
+            assert.equal(score > 0, true);
+            assert.deepEqual(vars, {
+                "a": {
+                    "0": {
+                        "0": 3,
+                        "item": "(val)"
+                    },
+                    "1": {
+                        "0": "?π",
+                        "item": "(sym)",
+                        "_approx": 3.14,
+                        "display": "exact"
+                    },
+                    "oper": "/",
+                    "_approx": 0.9554140127388535,
+                    "display": "approx"
+                }
+            });
+        });
+        
 
     });
 
-    describe('partial matches', function() {
-        it('shouldn\'t match if second has all the fields of first and extra and no __match_up pragma is used', function() {
+    describe("partial matches", function() {
+        it("shouldn't match if second has all the fields of first and extra and no __match_up pragma is used", function() {
             const vars = {};
 
             const score = util.match(
@@ -157,7 +200,7 @@ describe('util.match', function() {
             assert.equal(score, 0);
         });
 
-        it('should whole object if __match_up pragma is used and object contains all values', function() {
+        it("should match whole object if __match_up pragma is used and object contains all values", function() {
             const vars = {};
 
             const score = util.match(
@@ -181,7 +224,7 @@ describe('util.match', function() {
                     },
                     1: {
                         oper: "(symbol)",
-                        0: 'pi',
+                        0: "pi",
                         value: 3.14
                     }
                 },
@@ -197,13 +240,13 @@ describe('util.match', function() {
                 },
                 "b": {
                     oper: "(symbol)",
-                    0: 'pi',
+                    0: "pi",
                     value: 3.14
                 }
             });
         });
         
-        it('null can be used as a match all inside __match_up pragmas', function() {
+        it("shouldn't match whole object if __match_up pragma is used and object doesn't contain all values", function() {
             const vars = {};
 
             const score = util.match(
@@ -211,11 +254,12 @@ describe('util.match', function() {
                     oper: "+",
                     0: {
                         __match_up: "a",
-                        value: null
+                        value: 3,
+                        nonexistent: 3
                     },
                     1: {
                         __match_up: "b",
-                        value: null
+                        value: 3.14
                     }
                 },
                 {
@@ -227,7 +271,67 @@ describe('util.match', function() {
                     },
                     1: {
                         oper: "(symbol)",
-                        0: 'pi',
+                        0: "pi",
+                        value: 3.14
+                    }
+                },
+                vars
+            );
+
+            assert.equal(score, 0);
+        });
+        
+        it("shouldn't match object if __match_up pragma is used and object doesn't contain all values", function() {
+            const vars = {};
+
+            const score = util.match(
+                {
+                    oper: "+",
+                    0: types.int("a"),
+                    1: eq.contains("b", {
+                        _approx: eq.any
+                    })
+                },
+                {
+                    oper: "+",
+                    0: types.int(13),
+                    1: {
+                        item: "(sym)",
+                        0: "?π",
+                        display: "π"
+                    }
+                },
+                vars
+            );
+
+            assert.equal(score, 0);
+        });
+        
+        it("empty string can be used as a match all inside __match_up pragmas", function() {
+            const vars = {};
+
+            const score = util.match(
+                {
+                    oper: "+",
+                    0: {
+                        __match_up: "a",
+                        value: eq.any
+                    },
+                    1: {
+                        __match_up: "b",
+                        value: eq.any
+                    }
+                },
+                {
+                    oper: "+",
+                    0: {
+                        oper: "(val)",
+                        0: 3,
+                        value: 3
+                    },
+                    1: {
+                        oper: "(symbol)",
+                        0: "pi",
                         value: 3.14
                     }
                 },
@@ -243,23 +347,23 @@ describe('util.match', function() {
                 },
                 "b": {
                     oper: "(symbol)",
-                    0: 'pi',
+                    0: "pi",
                     value: 3.14
                 }
             });
         });
 
-        it('contains function can be used to inject __match_up pragma', function() {
+        it("contains function can be used to inject __match_up pragma", function() {
             const vars = {};
 
             const score = util.match(
                 {
                     oper: "+",
                     0: eq.contains("a", {
-                        value: null
+                        value: eq.any
                     }),
                     1: eq.contains("b", {
-                        value: null
+                        value: eq.any
                     })
                 },
                 {
@@ -271,7 +375,7 @@ describe('util.match', function() {
                     },
                     1: {
                         oper: "(symbol)",
-                        0: 'pi',
+                        0: "pi",
                         value: 3.14
                     }
                 },
@@ -287,13 +391,14 @@ describe('util.match', function() {
                 },
                 "b": {
                     oper: "(symbol)",
-                    0: 'pi',
+                    0: "pi",
                     value: 3.14
                 }
             });
         });
+
         
-        it('shouldn\'t match if first has all the fields of second and extra', function() {
+        it("shouldn't match if first has all the fields of second and extra", function() {
             const vars = {};
 
             const score = util.match(
@@ -304,6 +409,8 @@ describe('util.match', function() {
             
             assert.equal(score, 0);
         });
+
+        
         
     });
     

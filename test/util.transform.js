@@ -84,11 +84,11 @@ describe('util.transform', function() {
                     oper: "+",
                     0: {
                         __match_up: "a",
-                        value: null
+                        value: ""
                     },
                     1: {
                         __match_up: "b",
-                        value: null
+                        value: ""
                     }
                 },
                 1: {
@@ -130,7 +130,7 @@ describe('util.transform', function() {
             
         });
 
-        it('should work with util.contains function and any keyword', function() {
+        it('should work with eq.contains function and eq.any keyword', function() {
             const equation = {
                 oper: "=",
                 0: {

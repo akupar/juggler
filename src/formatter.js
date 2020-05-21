@@ -93,6 +93,7 @@ export function format(expr) {
         return createBlock((Number.isInteger(expr) ? "mn" : "mi"), expr, expr);
     }
 
+
     const { equation, vars } = formatters.bestMatch(expr);
 
     const formatter = equation ? equation[1] : defaultFormatter;
@@ -103,3 +104,4 @@ export function format(expr) {
 }
 
 
+console.log("formatter loaded");

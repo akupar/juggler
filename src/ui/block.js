@@ -269,7 +269,7 @@ export function createBlock(elemName, content, expr) {
 
 export function showSuggestions() {
     var expr = deformat(this);
-    debug.showExpression(expr);
+    debug.showExpression(this, expr);
     
     suggestions.clear();
 
@@ -290,3 +290,4 @@ export function showSuggestions() {
     });
 }
 
+console.log("block loaded");
