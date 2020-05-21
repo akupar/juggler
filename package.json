@@ -1,0 +1,35 @@
+{
+    "name": "algebra2",
+    "version": "1.0.0",
+    "description": "",
+    "private": true,
+    "scripts": {
+        "test": "mocha --require esm",
+        "lint": "eslint .",
+        "start": "webpack-dev-server --open",
+        "build": "webpack"
+    },
+    "repository": {
+        "type": "git",
+        "url": "algebra2"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "css-loader": "^3.5.3",
+        "eslint": "^6.8.0",
+        "eslint-loader": "^4.0.2",
+        "expect": "^26.0.1",
+        "file-loader": "^6.0.0",
+        "mocha": "^7.1.2",
+        "style-loader": "^1.2.1",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.11",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "dependencies": {
+        "esm": "^3.2.25",
+        "jquery": "^3.5.1",
+        "jquery-ui": "^1.12.1"
+    }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:m="http://www.w3.org/1998/Math/MathML"
+  xml:lang="en"
+  lang="en"
+  >
+  <head>
+    <title>Juggler</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="bundle.js"></script>
+  </head>
+  <body class="">
+    <div>
+      <h1>Ju<span style="font-variant: super;">gg</span>ler <span style="margin-left: -1em; font-size: small;">0.1</span></h1>
+      <div id="status-display">
+        <div>
+          Expression:
+          <pre class="debug" id="status-expression">
+          </pre>
+        </div>
+        <div>
+          Buckets:
+        <ul class="debug" id="status-buckets">
+        </ul>
+        </div>
+      </div>
+      <div style="width: 50%; margin: auto; text-align: center;">
+        <span id="undo-pos"></span>
+        <button class="undo-button">Undo</button> <button class="redo-button">Redo</button>
+      </div>
+      <div class="right-panel" style="float: right; border: solid black 1px;">
+        <div id="user-symbols">
+          <h2>Symbols</h2>
+          <m:math>
+          <mtable xmlns="http://www.w3.org/1998/Math/MathML">
+            <i>no symbols</i>
+          </mtable>
+          </m:math>
+        </div>
+      </div>
+      
+      <div class="main">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" id="canvas" display="block">
+            <m:mtable>
+            </m:mtable>
+        </math>
+        <div class="dialog" id="dialog-from-two-third" title="Input values">
+          <form>
+            <fieldset>
+              <label for="number1">Number</label>
+              <input type="number" name="number1" class="text ui-widget-content ui-corner-all" /><br/>
+              <div class="combine-operator" style="text-align: center;">+</div>
+              <label for="number2">Number 2</label>
+              <input type="number" name="number2" class="text ui-widget-content ui-corner-all" /><br/>
+              <div class="result-operator" style="text-align: center;">=</div>
+              <label for="result">Result</label>
+              <input type="number" name="result" class="text ui-widget-content ui-corner-all" disabled />
+            </fieldset>
+          </form>
+        </div>
+        <div class="dialog" id="dialog-one-number" title="Input values">
+          <form>
+            <fieldset>
+              <label for="number">Number</label>
+              <input type="number" name="number" class="text ui-widget-content ui-corner-all" /><br/>
+            </fieldset>
+          </form>
+        </div>
+        <div id="transformSuggestions">
+          <h2>Kaavat</h2>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" >
+            <mtable>
+            </mtable>
+          </math>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

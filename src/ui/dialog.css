@@ -1,0 +1,8 @@
+.ui-dialog {
+    background-color: white;
+    border: solid gray 1px;
+}
+
+.ui-button-icon-only {
+    overflow: hidden;
+}

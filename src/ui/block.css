@@ -1,0 +1,88 @@
+.block {
+    display: inline-block;
+    border: solid lightgrey 1px;
+    border-radius: 3px;
+    padding: 20px;
+    margin: 20px;
+    cursor: pointer;
+    vertical-align: middle;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.selected {
+    /*border: dashed blue 2px !important;*/
+    background: lightblue !important;
+}
+
+
+.integer {
+    background-color: lightgoldenrodyellow;
+    border: solid darkyellow 1px;
+}
+
+.symbol {
+    background-color: lightsteelblue;
+    border: solid blue 1px;
+}
+
+.variable {
+    background-color: lightgreen;
+    border: solid green 1px;
+}
+
+
+.equals {
+    background-color: lightyellow;
+}
+
+
+.ref {
+    background-color: #ffffe0;
+    border: solid green 2px;
+}
+
+.operplus {
+    background-color: #ffaaaa;
+}
+.opermult {
+    background-color: #ffeeaa;
+}
+.operplus > .operplus {
+    border: dotted darkgrey 2px;
+}
+.opermult > .opermult {
+    border: dotted darkgrey 2px;
+}
+.operminus {
+    background-color: #aaeeff;
+}
+.operdiv {
+    background-color: #eeffaa;
+}
+
+.operpow {
+    background-color: #aaffcc;
+}
+.operroot {
+    background-color: #ffccaa;
+}
+
+
+
+
+.value-over-plus-one {
+    background-color: blue;
+}
+
+.value-under-minus-one {
+    backgound-color: red;
+}
+
+.value-between-zero-and-plus-one {
+    background-color: yellow;
+}
+
+.value-between-zero-and-minus-one {
+    background-color: violet;
+}

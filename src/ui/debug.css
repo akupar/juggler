@@ -1,0 +1,8 @@
+#status-display {
+    border: solid 1px darkgrey;
+    padding: 1ex;
+    background-color: #eee;
+    float: left;
+    font-size: x-small;
+}
+
