@@ -70,14 +70,12 @@ store.addEquation({
     0: {
         oper: "+",
         0: "a",
-        1: "b",
-        "?_approx": "approx"
+        1: "b"
     },
     1: {
         oper: "+",
         0: "b",
-        1: "a",
-        "?_approx": "approx"
+        1: "a"
     }
 }, "Vaihda paikkoja");
 
@@ -147,7 +145,7 @@ store.addEquation({
         },
         1: {
             oper: "(summary)",
-            approx: "approx",
+            _approx: "approx",
             display: "approximation",
             0: "b"
         }
@@ -163,7 +161,7 @@ store.addEquation({
                 },
                 1: vars["b"]
             },
-            approx: (vars["a"] + vars["approx"]),
+            _approx: (vars["a"] + vars["approx"]),
             display: (vars["a"] + vars["approx"]) + "..."
         };
     }
@@ -177,7 +175,8 @@ store.addEquation2({
     0: {
         oper: "+",
         0: int("a"),
-        1: "b"
+        1: "b",
+        "?_approx": "approx"
     },
     1: function c({ a, b }) {
         return {
@@ -188,8 +187,8 @@ store.addEquation2({
             display: ":approx"
         };
     },
-    where: ({ b }) => {
-        return ("_approx" in b);
+    where: ({ b, approx }) => {
+        return !approx && ("_approx" in b);
     },
     desc: "Aseta display-jäsen +"
 });

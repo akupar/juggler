@@ -76,111 +76,6 @@ describe('util.transform', function() {
 
     });
 
-    describe('__match_up pragma', function() {
-        it('should apply operation to higher level object', function() {
-            const equation = {
-                oper: "=",
-                0: {
-                    oper: "+",
-                    0: {
-                        __match_up: "a",
-                        value: ""
-                    },
-                    1: {
-                        __match_up: "b",
-                        value: ""
-                    }
-                },
-                1: {
-                    oper: "/",
-                    0: "a",
-                    1: "b"
-                }
-            };
-            
-            const input = {
-                oper: "+",
-                0: {
-                    oper: "(val)",
-                    0: 3,
-                    value: 3
-                },
-                1: {
-                    oper: "(symbol)",
-                    0: 'pi',
-                    value: 3.14
-                }
-            };
-                
-            const result = util.transform(equation, input);
-
-            assert.deepEqual(result, {
-                oper: "/",
-                0: {
-                    oper: "(val)",
-                    0: 3,
-                    value: 3
-                },
-                1: {
-                    oper: "(symbol)",
-                    0: 'pi',
-                    value: 3.14
-                }
-            });
-            
-        });
-
-        it('should work with eq.contains function and eq.any keyword', function() {
-            const equation = {
-                oper: "=",
-                0: {
-                    oper: "+",
-                    0: eq.contains("a", {
-                        value: eq.any
-                    }),
-                    1: eq.contains("b", {
-                        value: eq.any
-                    })
-                },
-                1: {
-                    oper: "/",
-                    0: "a",
-                    1: "b"
-                }
-            };
-            
-            const input = {
-                oper: "+",
-                0: {
-                    oper: "(val)",
-                    0: 3,
-                    value: 3
-                },
-                1: {
-                    oper: "(symbol)",
-                    0: 'pi',
-                    value: 3.14
-                }
-            };
-            
-            const result = util.transform(equation, input);
-
-            assert.deepEqual(result, {
-                oper: "/",
-                0: {
-                    oper: "(val)",
-                    0: 3,
-                    value: 3
-                },
-                1: {
-                    oper: "(symbol)",
-                    0: 'pi',
-                    value: 3.14
-                }
-            });
-            
-        });
-    });
 
 
     describe('optional keys', function() {
@@ -252,8 +147,8 @@ describe('util.transform', function() {
     });
 
     describe('optional keys 2', function() {
-        it('?? optional keys should be??', function() {
-            assert.deepEqual(
+        it('optional keys should be mandatory if in equation', function() {
+            assert.throws(() =>
                 util.transform(
                     {
                         oper: "=",
@@ -261,13 +156,13 @@ describe('util.transform', function() {
                             oper: "/",
                             0: "a",
                             1: "b",
-                            "_approx": "approx"
+                            _approx: "approx"                            
                         },
                         1: {
                             oper: "/",
                             0: "b",
                             1: "a",
-                            "_approx": "approx"
+                            _approx: "approx"                            
                         }
                     },
                     {
@@ -276,14 +171,44 @@ describe('util.transform', function() {
                         1: 8
                     }
                 ),
+                "Not matching"
+            );
+        });
+        
+        it('optional keys should be copied also when mandatory', function() {
+            assert.deepEqual(
+                util.transform(
+                    {
+                        oper: "=",
+                        0: {
+                            oper: "/",
+                            0: "a",
+                            1: "b",
+                            _approx: "approx"
+                        },
+                        1: {
+                            oper: "/",
+                            0: "b",
+                            1: "a",
+                            _approx: "approx"                            
+                        }
+                    },
+                    {
+                        oper: "/",
+                        0: 9,
+                        1: 8,
+                        _approx: 1.125
+                    }
+                ),
                 {
                     oper: "/",
                     0: 8,
-                    1: 9
+                    1: 9,
+                    _approx: 1.125                        
                 }
             );
         });
-
+        
         it('optional keys should be copied if given', function() {
             assert.deepEqual(
                 util.transform(

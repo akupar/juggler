@@ -1,5 +1,5 @@
 import store from "./store";
-import { auto } from "../types";
+import { auto, int } from "../types";
 
 // -(-a) = a
 store.addEquation({
@@ -47,7 +47,7 @@ store.addEquation({
         1: "a"
     }
 },
-"Switch places",
+                  "Switch places",
 );
 
 
@@ -64,8 +64,8 @@ store.addEquation({
         0: "a"
     }
 },
-"Muuta negatiiviseksi luvuksi",
-"Muuta nollasta vähentämiseksi"
+                  "Muuta negatiiviseksi luvuksi",
+                  "Muuta nollasta vähentämiseksi"
 );
 
 // a - b = a + -b
@@ -123,7 +123,7 @@ store.addEquation({
         };
     }
 },
-"Vähennä");
+                  "Vähennä");
 
 
 // -(a + b) = -a - b
@@ -146,8 +146,8 @@ store.addEquation({
         1: "b"
     }
 },
-"Apply minus to members",
-"Take minus out"
+                  "Apply minus to members",
+                  "Take minus out"
 );
 
 
@@ -171,7 +171,31 @@ store.addEquation({
         }
     }
 },
-"Apply minus to members",
-"Take minus out"
+                  "Apply minus to members",
+                  "Take minus out"
 );
+
+
+// a - b.approx = (a - b).approx
+store.addEquation2({
+    0: {
+        oper: "-",
+        0: int("a"),
+        1: "b",
+        "?_approx": "approx"
+    },
+    1: function c({ a, b }) {
+        return {
+            oper: "-",
+            0: int(a),
+            1: b,
+            _approx: a - b._approx,
+            display: ":approx"
+        };
+    },
+    where: ({ b, approx }) => {
+        return !approx && ("_approx" in b);
+    },
+    desc: "Show approximate value"
+});
 

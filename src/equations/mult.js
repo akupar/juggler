@@ -80,8 +80,8 @@ store.addEquation({
         1: "a" 
     }
 },
-"Muuta yhteenlaskuksi",
-"Muuta 2:lla kertomiseksi"
+                  "Muuta yhteenlaskuksi",
+                  "Muuta 2:lla kertomiseksi"
 );
 
 // n×a + m×a = (n + m)×a
@@ -110,8 +110,8 @@ store.addEquation({
         1: "a"
     }
 },
-"Muuta yhteenlaskuksi",
-"Muuta 2:lla kertomiseksi"
+                  "Muuta yhteenlaskuksi",
+                  "Muuta 2:lla kertomiseksi"
 );
 
 
@@ -179,8 +179,8 @@ store.addEquation({
         }
     }
 },
-"Yhteinen tekijä ulos",
-"Kerro molemmat"
+                  "Yhteinen tekijä ulos",
+                  "Kerro molemmat"
 );
 
 //(a × b) + (a × c) = a × (b + c)
@@ -209,8 +209,8 @@ store.addEquation({
         1: "a"
     }
 },
-"Yhteinen tekijä ulos",
-"Kerro molemmat"
+                  "Yhteinen tekijä ulos",
+                  "Kerro molemmat"
 );
 
 // a×1 = a
@@ -226,8 +226,8 @@ store.addEquation({
     },
     1: "a"
 },
-"Poista yhdellä kertominen",
-"Kerro yhdellä"
+                  "Poista yhdellä kertominen",
+                  "Kerro yhdellä"
 
 );
 
@@ -286,36 +286,31 @@ store.addEquation({
         };
     }
 },
-"Multiply numbers"
+                  "Multiply numbers"
 );
 
 
 
-// a × summary(b) = summary(a × b)
-store.addEquation({
-    oper: "->",
+store.addEquation2({
     0: {
         oper: "×",
-        0: {
-            oper: "(summary)",
-            approx: "approx",
-            display: "approximation",
-            0: "b"
-        },
-        1: int("a")
+        0: int("a"),
+        1: "b",
+        "?_approx": "approx"
     },
-    1: function c (vars) {
+    1: function c({ a, b }) {
         return {
-            oper: "(summary)",
-            0: {
-                oper: "×",
-                0: vars["b"],
-                1: int(vars["a"])
-            },
-            approx: (vars["a"] * vars["approx"]),
-            display: (vars["a"] * vars["approx"]) + "..."
+            oper: "×",
+            0: int(a),
+            1: b,
+            _approx: a * b._approx,
+            display: ":approx"
         };
-    }
-},
-"Multiply numbers"
-);
+    },
+    where: ({ b, approx }) => {
+        // Match only if parent doesnt already have an approx so to not display
+        // both the show approximate value and calculate approximate value.
+        return !approx && ("_approx" in b);
+    },
+    desc: "Display approximate value"
+});

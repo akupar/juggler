@@ -116,30 +116,6 @@ describe('util.apply', function() {
             );
         });
     });
-
-    describe('when given expression with __match_up pragma', function() {
-        
-        it('should replace it with corresponding variable', function() {
-            const result = util.apply({
-                oper: "+",
-                0: {
-                    __match_up: "a",
-                    value: "c"
-                },
-                1: {
-                    __match_up: "b",
-                    value: eq.any
-                }
-            }, { "a": { type: "int", val: 5 }, "b": 6 });
-            
-            assert.deepEqual(result, {
-                oper: "+",
-                0: { type: "int", val: 5 },
-                1: 6
-            });
-        });
-
-    });
     
 });    
 

@@ -19,7 +19,7 @@ import store from "./store";
 store.addEquation2({
     0: "a",
     1: function exact({ a }) {
-        console.log("sho exact:", a);
+        console.log("sho exact:", JSON.stringify(a));
         const copy =  {
             ...a
         };
@@ -46,7 +46,7 @@ store.addEquation2({
     where: ({ a }) => {
         return ("_approx" in a) && !("display" in a);
     },
-    desc: "Display as approximate value OOO"
+    desc: "Display as approximate value"
 });
 
 

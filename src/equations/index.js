@@ -17,9 +17,9 @@ import "./constants";        // π, e, ...
 //import "./power.js";         // ^ or pow
 //import "./mixedNumeral.js";  // displaying fraction as mixed numeral
 import "./div.js";           // operators / and :
-//import "./mult.js";          // multiplication operator ×
-//import "./minus.js";         // unary and binary minus (-)
-import "./plus.js";          // unary and binary plus (-)
+import "./mult.js";          // multiplication operator ×
+import "./minus.js";         // unary and binary minus (-)
+import "./plus.js";          // unary and binary plus (+)
 //import "./summary.js";       // displaying approximate values
 //import "./sum.js";           // sum operator
 //import "./extra.js";         //

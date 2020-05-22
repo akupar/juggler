@@ -459,7 +459,7 @@ store.addEquation({
         
         return {
             oper: "(summary)",
-            approx: r,
+            _approx: r,
             display: suppressRepeatingDigits(r.toString()),
             0: {
                 oper: "/",
@@ -496,7 +496,7 @@ store.addEquation({
         
         return {
             oper: "(summary)",
-            approx: r,
+            _approx: r,
             display: suppressRepeatingDigits(r.toString()),
             0: {
                 oper: ":",
@@ -518,7 +518,7 @@ store.addEquation({
  *         0: int("a"),
  *         1: {
  *             oper: "(summary)",
- *             approx: "approx",
+ *             _approx: "approx",
  *             display: "approx",
  *             0: "b"
  *         }
@@ -531,7 +531,7 @@ store.addEquation({
  *                 0: int(vars["a"]),
  *                 1: vars["b"]
  *             },
- *             approx: (vars["a"] / vars["approx"]),
+ *             _approx: (vars["a"] / vars["approx"]),
  *             display: (vars["a"] / vars["approx"]) + "..."
  *         };
  *     }
@@ -545,7 +545,8 @@ store.addEquation2({
     0: {
         oper: "/",
         0: int("a"),
-        1: "b"
+        1: "b",
+        "?_approx": "approx"
     },
     1: function c({ a, b }) {
         return {
@@ -556,8 +557,8 @@ store.addEquation2({
             display: ":approx"
         };
     },
-    where: ({ b }) => {
-        return ("_approx" in b);
+    where: ({ b, approx }) => {
+        return !approx && ("_approx" in b);
     },
-    desc: "Aseta display-jäsen"
+    desc: "Calculate approximate value"
 });

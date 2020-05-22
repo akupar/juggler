@@ -98,7 +98,7 @@ $(document).ready(function () {
         oper: "+",
         0: auto(7),
         1: {
-            oper: "/",
+            oper: "-",
             0: auto(3),
             1: {
                 item: "(sym)",

@@ -52,14 +52,14 @@ formatters.addEquation({
         item: "(val)",
         0: "a",
     },
-    1: (vars) => {
-        let a = vars["a"],
+    1: ({ a }) => {
+        let aElem = a,
             self = createBlock(
-                (Number.isInteger(vars["a"]) ? "mn" : "mi"),
-                [ a ],
+                (Number.isInteger(a) ? "mn" : "mi"),
+                [ aElem ],
                 {
                     item: "(val)",
-                    0: vars["a"]
+                    0: a
                 }
             );
 
@@ -128,15 +128,14 @@ formatters.addEquation({
         0: "a",
         _approx: "approx"
     },
-    1: (vars) => {
-        let a = vars["a"],
-            self = createBlock(
+    1: ({ a, approx }) => {
+        let self = createBlock(
                 "mi",
                 [ a.replace(/^\?/, "") ],
                 {
                     item: "(sym)",
-                    0: vars["a"],
-                    _approx: vars["approx"]
+                    0: a,
+                    _approx: approx
                 }
             );
 
@@ -154,14 +153,14 @@ formatters.addEquation({
         item: "(func)",
         0: "a",
     },
-    1: (vars) => {
-        let a = vars["a"].replace(/^\?/, ""),
-            self = createBlock(
+    1: ({ a }) => {
+        a = a.replace(/^\?/, "");
+        let self = createBlock(
                 "mi",
                 [ a ],
                 {
                     item: "(func)",
-                    0: vars["a"]
+                    0: a
                 }
             );
 
@@ -181,16 +180,17 @@ formatters.addEquation({
         name: "f",
         0: "a",
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            f = vars["f"].replace(/^\?/, ""),
+    1: ({ a, f }) => {
+        f = f.replace(/^\?/, "");
+        
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",
-                [ $mathml("mo").append(f), " ", a ],
+                [ $mathml("mo").append(f), " ", aElem ],
                 {
                     item: "(func)",
-                    name: vars["f"],
-                    0: "#" + a.getAttribute("id"),
+                    name: f,
+                    0: "#" + aElem.getAttribute("id"),
                 }
             );
 
@@ -210,18 +210,19 @@ formatters.addEquation({
         0: "a",
         1: "b"
     },
-    1: function NEW_FUNC_FORMATTER(vars) {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
-            f = vars["f"].replace(/^\?/, ""),
+    1: function NEW_FUNC_FORMATTER({ a, b, f }) {
+        f = f.replace(/^\?/, "");
+
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ $mathml("mo").append(f), " ", a, ", ", b ],
+                [ $mathml("mo").append(f), " ", aElem, ", ", bElem ],
                 {
                     item: "(func)",
-                    name: vars["f"],
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    name: f,
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -240,14 +241,13 @@ formatters.addEquation({
         item: "(imaginary)",
         0: "a",
     },
-    1: (vars) => {
-        let a = vars["a"],
-            self = createBlock(
+    1: ({ a }) => {
+        let self = createBlock(
                 "mi",
                 [ a ],
                 {
                     item: "(imaginary)",
-                    0: vars["a"]
+                    0: a
                 }
             );
 
@@ -268,15 +268,15 @@ formatters.addEquation({
         display: "d",
         0: "a"
     },
-    1: (vars) => {
+    1: ({ a, d, approx }) => {
         const self = createBlock(
             "mn",                    
-            vars["d"],
+            d,
             {
                 oper: "(summary)",
-                display: vars["d"],
-                approx: vars["approx"],
-                0: vars["a"]
+                display: d,
+                approx: approx,
+                0: a
             }
         );
         
@@ -294,16 +294,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "msub",                    
-                [ a, b ],
+                [ aElem, bElem ],
                 {
                     oper: "[]",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -322,15 +322,15 @@ formatters.addEquation({
         0: "a",
         "?_approx": "approx"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
+    1: ({ a, approx }) => {
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",                    
-                [ $mathml("mo").append("+"), a ],
+                [ $mathml("mo").append("+"), aElem ],
                 {
                     oper: "+",
-                    0: "#" + a.getAttribute("id"),
-                    _approx: vars["approx"]
+                    0: "#" + aElem.getAttribute("id"),
+                    _approx: approx
                 }
             );
 
@@ -348,14 +348,14 @@ formatters.addEquation({
         oper: "-",
         0: "a"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
+    1: ({ a }) => {
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",                    
-                [ $mathml("mo").append("-"), a ],
+                [ $mathml("mo").append("-"), aElem ],
                 {
                     oper: "-",
-                    0: "#" + a.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id"),
                 }
             );
         
@@ -372,14 +372,14 @@ formatters.addEquation({
         oper: "±",
         0: "a"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
+    1: ({ a }) => {
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",                    
-                [ $mathml("mo").append("±"), a ],
+                [ $mathml("mo").append("±"), aElem ],
                 {
                     oper: "±",
-                    0: "#" + a.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id"),
                 }
             );
 
@@ -396,14 +396,14 @@ formatters.addEquation({
         oper: "(sin)",
         0: "a"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
+    1: ({ a }) => {
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",                    
-                [ $mathml("mo").append("sin"), " ", a ],
+                [ $mathml("mo").append("sin"), " ", aElem ],
                 {
                     oper: "(sin)",
-                    0: "#" + a.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id"),
                 }
             );
 
@@ -420,14 +420,14 @@ formatters.addEquation({
         oper: "(cos)",
         0: "a"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
+    1: ({ a }) => {
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",                    
-                [ $mathml("mo").append("cos"), " ", a ],
+                [ $mathml("mo").append("cos"), " ", aElem ],
                 {
                     oper: "(cos)",
-                    0: "#" + a.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id"),
                 }
             );
 
@@ -444,14 +444,14 @@ formatters.addEquation({
         oper: "(tan)",
         0: "a"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
+    1: ({ a }) => {
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",                    
-                [ $mathml("mo").append("tan"), " ", a ],
+                [ $mathml("mo").append("tan"), " ", aElem ],
                 {
                     oper: "(tan)",
-                    0: "#" + a.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id"),
                 }
             );
 
@@ -469,14 +469,14 @@ formatters.addEquation({
         oper: "(abs)",
         0: "a"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
+    1: ({ a }) => {
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",                    
-                [ $mathml("mo").append("|"), a, $mathml("mo").append("|") ],
+                [ $mathml("mo").append("|"), aElem, $mathml("mo").append("|") ],
                 {
                     oper: "(abs)",
-                    0: "#" + a.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id"),
                 }
             );
 
@@ -524,18 +524,20 @@ formatters.addEquation({
     0: {
         oper: "-",
         0: "a",
-        1: "b" 
+        1: "b" ,
+        "?_approx": "approx"        
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b, approx }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("-"), b ],
+                [ aElem, $mathml("mo").append("-"), bElem ],
                 {
                     oper: "-",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id"),
+                    _approx: approx
                 }
             );
 
@@ -585,18 +587,20 @@ formatters.addEquation({
     0: {
         oper: "×",
         0: "a",
-        1: "b" 
+        1: "b",
+        "?_approx": "approx"        
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b, approx }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("&middot;"), b ],
+                [ aElem, $mathml("mo").append("&middot;"), bElem ],
                 {
                     oper: "×",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id"),
+                    _approx: approx
                 }
             );
 
@@ -614,16 +618,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append(":"), b ],
+                [ aElem, $mathml("mo").append(":"), bElem ],
                 {
                     oper: ":",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -642,17 +646,14 @@ formatters.addEquation({
         1: "b",
         2: "c"         
     },
-    1: (vars) => {
-        let a = vars["a"],
-            b = vars["b"],
-            c = vars["c"],
-            self = createBlock(
+    1: ({ a, b, c }) => {
+        let self = createBlock(
                 "mpadded",
                 [
-                    $mathml("mpadded").append(a[0]),
+                    $mathml("mpadded").append(a),
                     $mathml("mfrac").append([
-                        $mathml("mpadded").append(b[0]),
-                        $mathml("mpadded").append(c[0])
+                        $mathml("mpadded").append(b),
+                        $mathml("mpadded").append(c)
                     ])
                 ],
                 {
@@ -677,16 +678,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "msup",
-                [ $mathml("mpadded").append(a), $mathml("mpadded").append(b) ],
+                [ $mathml("mpadded").append(aElem), $mathml("mpadded").append(bElem) ],
                 {
                     oper: "^",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -705,16 +706,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mroot",
-                [ $mathml("mpadded").append(a), $mathml("mpadded").append(b) ],
+                [ $mathml("mpadded").append(aElem), $mathml("mpadded").append(bElem) ],
                 {
                     oper: "(root)",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -733,16 +734,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("∘"), b ],
+                [ aElem, $mathml("mo").append("∘"), bElem ],
                 {
                     oper: "∘",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -762,16 +763,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "msup",
-                [ $mathml("mpadded").append(a), $mathml("mpadded").append(b) ],
+                [ $mathml("mpadded").append(aElem), $mathml("mpadded").append(bElem) ],
                 {
                     oper: "(function power)",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -792,16 +793,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append(";"), "<br/>", b ],
+                [ aElem, $mathml("mo").append(";"), "<br/>", bElem ],
                 {
                     oper: ";",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -821,16 +822,16 @@ formatters.addEquation({
         0: "ab",
         1: "c" 
     },
-    1: (vars) => {
-        let ab = format(vars["ab"]),
-            c = format(vars["c"]),
+    1: ({ ab, c }) => {
+        let abElem = format(ab),
+            cElem = format(c),
             self = createBlock(
                 "msup",
-                [ $mathml("mpadded").append(ab), $mathml("mpadded").append("(", c) ],
+                [ $mathml("mpadded").append(abElem), $mathml("mpadded").append("(", cElem) ],
                 {
                     oper: "(supistaminen)",
-                    0: "#" + ab.getAttribute("id"),
-                    1: "#" + c.getAttribute("id")
+                    0: "#" + abElem.getAttribute("id"),
+                    1: "#" + cElem.getAttribute("id")
                 }
             );
 
@@ -850,17 +851,17 @@ formatters.addEquation({
         0: "ab",
         1: "c" 
     },
-    1: (vars) => {
-        let ab = format(vars["ab"]),
-            c = format(vars["c"]),
+    1: ({ ab, c }) => {
+        let abElem = format(ab),
+            cElem = format(c),
             self = createBlock(
                 "mmultiscripts",
                 // Huom. pitäisi olla oikein, muttei toimi Firefoxissa
-                [ $mathml("mpadded").append(ab), "<mprescripts/>", "<none/>", $mathml("mpadded").append(c, ")") ],
+                [ $mathml("mpadded").append(abElem), "<mprescripts/>", "<none/>", $mathml("mpadded").append(cElem, ")") ],
                 {
                     oper: "(laventaminen)",
-                    0: "#" + ab.getAttribute("id"),
-                    1: "#" + c.getAttribute("id")
+                    0: "#" + abElem.getAttribute("id"),
+                    1: "#" + cElem.getAttribute("id")
                 }
             );
 
@@ -883,13 +884,7 @@ formatters.addEquation({
         vble: "vble" 
     },
 
-    1: (vars) => {
-        const expr   = format(vars.expr),
-              start  = format(vars.start),
-              end    = format(vars.end),
-              concat = format(vars.concat),
-              vble   = format(vars.vble);
-
+    1: ({ expr, start, end, concat, vble }) => {
         return createBlock([
             "div",                
             format(bind(
@@ -897,7 +892,7 @@ formatters.addEquation({
                     symbol: vble,
                     val: start 
                 },
-                vars.expr
+                expr
             )),
             " ",
             concat,
@@ -907,7 +902,7 @@ formatters.addEquation({
                     symbol: vble,
                     val: start + 1 
                 },
-                vars.expr
+                expr
             )),
             concat,                
             " ... ",
@@ -918,7 +913,7 @@ formatters.addEquation({
                     symbol: vble,
                     val: end 
                 },
-                vars.expr
+                expr
             ))
         ], {
             oper: "...",
@@ -944,12 +939,7 @@ formatters.addEquation({
         vble: "vble" 
     },
 
-    1: (vars) => {
-        const expr  = format(vars.expr),
-              start = format(vars.start),
-              end   = format(vars.end),
-              vble  = format(vars.vble);
-
+    1: ({ expr, start, end, vble }) => {
         
         return createBlock(
             "div",
@@ -976,16 +966,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("="), b ],
+                [ aElem, $mathml("mo").append("="), bElem ],
                 {
                     oper: "=",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -1004,16 +994,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("≥"), b ],
+                [ aElem, $mathml("mo").append("≥"), bElem ],
                 {
                     oper: "≥",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -1033,17 +1023,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        //console.log('vars a:', vars['a'], 'expr:');
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("&rarr;"), b ],
+                [ aElem, $mathml("mo").append("&rarr;"), bElem ],
                 {
                     oper: "&rarr;",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -1065,16 +1054,16 @@ formatters.addEquation({
         0: "a",
         1: "b"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("+"), b, "i" ],
+                [ aElem, $mathml("mo").append("+"), bElem, "i" ],
                 {
                     item: "(complex)",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
 
@@ -1093,16 +1082,16 @@ formatters.addEquation({
         0: "a",
         1: "b" 
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("∠"), b ],
+                [ aElem, $mathml("mo").append("∠"), bElem ],
                 {
                     oper: "∠",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
         
@@ -1120,14 +1109,14 @@ formatters.addEquation({
         oper: "°",
         0: "a"
     },
-    1: function degreeFormatter(vars) {
-        let a = format(vars["a"]),
+    1: function degreeFormatter({ a }) {
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("°") ],
+                [ aElem, $mathml("mo").append("°") ],
                 {
                     oper: "°",
-                    0: "#" + a.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id"),
                 }
             );
 
@@ -1145,14 +1134,14 @@ formatters.addEquation({
         oper: "(rad)",
         0: "a"
     },
-    1: function degreeFormatter(vars) {
-        let a = format(vars["a"]),
+    1: function degreeFormatter({ a }) {
+        let aElem = format(a),
             self = createBlock(
                 "mpadded",                    
-                [ a, " ", $mathml("mo").append("rad") ],
+                [ aElem, " ", $mathml("mo").append("rad") ],
                 {
                     oper: "(rad)",
-                    0: "#" + a.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id"),
                 }
             );
 
@@ -1172,15 +1161,15 @@ formatters.addEquation({
         oper: "f",
         0: "a"
     },
-    1: function generalFunctionFormatter1(vars) {
-        let a = format(vars["a"]),
-            f = format(vars["f"]),
+    1: function generalFunctionFormatter1({ a, f }) {
+        let aElem = format(a),
+            fElem = format(f),
             self = createBlock(
                 "mpadded",
-                [ $mathml("mi").append(f), "&nbsp;", a ],
+                [ $mathml("mi").append(fElem), "&nbsp;", aElem ],
                 {
-                    oper: "#" + f.getAttribute("id"),
-                    0: "#" + a.getAttribute("id")
+                    oper: "#" + fElem.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id")
                 }
             );
         
@@ -1199,17 +1188,17 @@ formatters.addEquation({
         0: "a",
         1: "b"        
     },
-    1: function generalFunctionFormatter2(vars) {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
-            f = format(vars["f"]),
+    1: function generalFunctionFormatter2({ a, b, f }) {
+        let aElem = format(a),
+            bElem = format(b),
+            fElem = format(f),
             self = createBlock(
                 "mpadded",
-                [ $mathml("mi").append(f), "&nbsp;", a, ", ", b ],
+                [ $mathml("mi").append(fElem), "&nbsp;", aElem, ", ", bElem ],
                 {
-                    oper: "#" + f.getAttribute("id"),
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id")
+                    oper: "#" + fElem.getAttribute("id"),
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id")
                 }
             );
         

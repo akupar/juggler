@@ -142,18 +142,19 @@ describe('util.hasRequiredKeysOf2', function() {
             it('returns true if required optional key is present', function() {
                 assert.ok(
                     util.hasRequiredKeysOf2(
-                        [ "oper", "!_approx", "0", "1" ],
+                        [ "oper", "_approx", "0", "1" ],
                         [ "oper", "_approx", "0", "1" ]
                     )
                 );
             });
 
             it('returns false if required optional key is missing', function() {
-                assert.ok(
+                assert.equal(
                     util.hasRequiredKeysOf2(
-                        [ "oper", "!_approx", "0", "1" ],
+                        [ "oper", "_approx", "0", "1" ],
                         [ "oper", "0", "1" ]
-                    )
+                    ),
+                    false
                 );
             });
         });
@@ -162,36 +163,36 @@ describe('util.hasRequiredKeysOf2', function() {
 
 
 // F                      E
-// a, c                   OK a,_b,c  ;  a,c
-//                        NG a,c,d  ;  a,_b,c,d  ;  a  ;  _b  ;  c  ;  a, _b  ;  _b, c  ;  d
+// 0: a, c                OK a,_b,c  ;  a,c
+// 1: a, _b, c            NG a,c,d  ;  a,_b,c,d  ;  a  ;  _b  ;  c  ;  a, _b  ;  _b, c  ;  d
 // 
 // 
-// F - E                               
-// []                                  
-// []                                 
+// F0 - E         F1 - E        
+// []             []               a, _b, c
+// []             [_b]             a, c
 // 
-// []                                  
-// []                                  
-// [c]                                 
-// [a, c]                              
-// [a]                                 
-// [c]                                 
-// [a]                                 
-// [a, c]                              
+// []             [_b]                    
+// []             []                 
+// [c]            [_b, c]                     
+// [a, c]         [a, c]                     
+// [a]            [a, _b]               
+// [c]            [c]              
+// [a]            [a]                  
+// [a, c]         [a, _b, c]                  
 // 
 // ----
-// E - F
-// [_b]   
-// []  
+// E - F0         E - F1
+// [_b]           []
+// []             []
 // 
-// [d]    
-// [_b, d] 
-// []    
-// [_b]   
-// []    
-// [_b]   
-// [_b]   
-// [d]   
+// [d]            [_b, d]
+// [_b, d]        [d]
+// []             []
+// [_b]           []
+// []             []
+// [_b]           []
+// [_b]           []
+// [d]            [d]
 
 
 // F                      E
