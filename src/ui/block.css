@@ -10,6 +10,10 @@
     background-color: rgba(255, 255, 255, 0.5);
 }
 
+.block:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
 .selected {
     /*border: dashed blue 2px !important;*/
     background: lightblue !important;

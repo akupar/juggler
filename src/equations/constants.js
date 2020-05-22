@@ -1,5 +1,5 @@
 import store from "./store";
-import { symbol } from "../types";
+//import { symbol } from "../types";
 
 /* store.addEquation({
  *     oper: "->",
@@ -14,18 +14,6 @@ import { symbol } from "../types";
  *         "Show exact value"
  * ); */
 
-
-store.addEquation({
-    oper: "=",
-    0: symbol("π"),
-    1: {
-        item: "(sym)",
-        0: "?π",
-        _approx: 3.14
-    }
-},
-"Show exact value"
-);
 
 
 store.addEquation2({

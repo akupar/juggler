@@ -99,7 +99,7 @@ formatters.addEquation({
     0: {
         item: "(sym)",
         0: "a",
-        _approx: "approx",
+        "?_approx": "approx",
     },
     1: ({ a, approx }) => {
         let self = createBlock(
@@ -113,6 +113,7 @@ formatters.addEquation({
         );
 
         self.classList.add("symbol");
+        self.setAttribute("title", approx || "");
         return self;
     }
 });
@@ -493,21 +494,21 @@ formatters.addEquation({
         1: "b",
         "?_approx": "approx"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b, approx }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mpadded",                    
-                [ a, $mathml("mo").append("+"), b ],
+                [ aElem, $mathml("mo").append("+"), bElem ],
                 {
                     oper: "+",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id"),
-                    _approx: vars["approx"]
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id"),
+                    _approx: approx
                 }
             );
 
-        
+        self.setAttribute("title", approx || "");
         return self;
     }
 });
@@ -552,21 +553,22 @@ formatters.addEquation({
         1: "b",
         "?_approx": "approx"
     },
-    1: (vars) => {
-        let a = format(vars["a"]),
-            b = format(vars["b"]),
+    1: ({ a, b, approx }) => {
+        let aElem = format(a),
+            bElem = format(b),
             self = createBlock(
                 "mfrac",
-                [ $mathml("mpadded").append(a), $mathml("mpadded").append(b) ],
+                [ $mathml("mpadded").append(aElem), $mathml("mpadded").append(bElem) ],
                 {
                     oper: "/",
-                    0: "#" + a.getAttribute("id"),
-                    1: "#" + b.getAttribute("id"),
-                    _approx: vars["approx"]                    
+                    0: "#" + aElem.getAttribute("id"),
+                    1: "#" + bElem.getAttribute("id"),
+                    _approx: approx
                 }
             );
 
-        
+
+        self.setAttribute("title", approx || "");
         return self;
     }
 });

@@ -2,7 +2,10 @@
     border: solid 1px darkgrey;
     padding: 1ex;
     background-color: #eee;
-    float: left;
+    position: absolute;
+    left: 10px;
     font-size: x-small;
+    width: 200px;
+    
 }
 
