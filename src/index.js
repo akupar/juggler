@@ -103,8 +103,7 @@ $(document).ready(function () {
             1: {
                 item: "(sym)",
                 0: "?π",
-                _approx: 3.14,
-                display: "exact"
+                _approx: 3.14
             }
         }
     };

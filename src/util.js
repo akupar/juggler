@@ -1,5 +1,8 @@
 const any = "";
 
+/**
+ * Returns elements of A that are not in B.
+ **/
 function difference(setA, setB) {
     let _difference = new Set(setA);
     for ( let elem of setB ) {
@@ -90,6 +93,24 @@ export function listsEqual(list1, list2) {
 }
 
 
+export function hasRequiredKeysOf(listF, listE) {
+    const isSetsEqual = (a, b) => a.size === b.size && [...a].every(value => b.has(value));
+
+    const Eall = new Set(listE);
+    const Fall = new Set(listF.map(elem => elem.replace(/^\?/, "")));
+    const Freq = new Set(listF.filter(elem => !elem.startsWith("?")));
+
+    //console.log("expr:", Eall, "eq_all:", Fall, "eq_req:", Freq);
+
+    // If E has all the required keys of F and no extra than all possible keys of F.
+    if ( isSetsEqual(difference(Freq, Eall), difference(Eall, Fall)) ) {
+        return true;
+    }
+
+    return false;
+}
+
+
 export function deepEqual(expr1, expr2) {
     if ( typeof(expr1) !== typeof(expr2) ) {
         return false;
@@ -136,8 +157,8 @@ export function match(formula, input, vars = {}) {
     }
     
     if ( debug ) {
-        console.log("formula:", formula, "keys:", getKeys(formula));
-        console.log("input:", input, "keys:", getKeys(input));
+        console.log("formula:", formula, "keys:", getKeys(formula || []));
+        console.log("input:", input, "keys:", getKeys(input || []));
     }
 
     if ( formula === any ) { // jokerimerkki __match_up-pragman sisällä, huom. muualla hävittää arvon!
@@ -163,8 +184,11 @@ export function match(formula, input, vars = {}) {
             }
             score+=5;
         }
-        
-        vars[name] = input;
+
+        // Input can be undefined if key is optional.
+        if ( input !== undefined ) { 
+            vars[name] = input;
+        }
 
     } else if ( formula === input ) {
         if ( debug ) { console.log("samat"); }
@@ -184,20 +208,24 @@ export function match(formula, input, vars = {}) {
         const keys_f = getKeys(formula).filter((key) => ! key.startsWith("__")),
               keys_i = getKeys(input).filter((key) => ! key.startsWith("__"));
         
-        if ( !formula.__match_up &&  !listsEqual(keys_f, keys_i) ) {
-            //console.log("ERI KEYS: ", keys_f, keys_i);
+        if ( !formula.__match_up &&  !hasRequiredKeysOf(keys_f, keys_i) ) {
+            if ( debug ) {
+                console.log("ERI KEYS: ", keys_f, keys_i);
+            }
             return 0;
         }
 
-        for ( let key of keys_f ) {
+        for ( let keyDef of keys_f ) {
+            const key = keyDef.replace(/^\?/, "");
+            
             if ( debug ) {
-                console.log("KEY:", key, JSON.stringify(formula[key]), JSON.stringify(input[key]), JSON.stringify(vars));
+                console.log("KEY:", keyDef, JSON.stringify(formula[keyDef]), JSON.stringify(input[key]), JSON.stringify(vars));
             }
 
-            if ( input[key] === undefined ) {
-                return 0;
+            if ( keyDef[0] !== "?" && input[key] === undefined ) {
+                continue;
             }
-            const subScore = formula[key] === any ? 1 : match(formula[key], input[key], vars);
+            const subScore = formula[keyDef] === any ? 1 : match(formula[keyDef], input[key], vars);
             console.assert(typeof(subScore) === "number");
             if ( subScore === 0 ) {
                 return 0;

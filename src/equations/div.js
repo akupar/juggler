@@ -553,7 +553,7 @@ store.addEquation2({
             0: int(a),
             1: b,
             _approx: a / b._approx,
-            display: "approx"
+            display: ":approx"
         };
     },
     where: ({ b }) => {

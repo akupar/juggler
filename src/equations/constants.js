@@ -31,13 +31,16 @@ store.addEquation({
 store.addEquation2({
     0: "a",
     1: function exact({ a }) {
-        return {
-            ...a,
-            display: "exact"
+        console.log("sho exact:", a);
+        const copy =  {
+            ...a
         };
+
+        delete copy.display;
+        return copy;
     },
     where: ({ a }) => {
-        return ("_approx" in a) && (!("display" in a) || a.display === "approx");
+        return (("display" in a) && a.display === ":approx");
     },
     desc: "Show exact value"
 });
@@ -49,11 +52,11 @@ store.addEquation2({
     1: function approx({ a }) {
         return {
             ...a,
-            display: "approx"
+            display: ":approx"
         };
     },
     where: ({ a }) => {
-        return ("_approx" in a) && (!("display" in a) || a.display === "exact");
+        return ("_approx" in a) && !("display" in a);
     },
     desc: "Display as approximate value OOO"
 });

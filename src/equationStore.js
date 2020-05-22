@@ -97,7 +97,6 @@ export default function EquationStore(onMember, pathMember) {
     };
     
     this.addEquation = function (equation, desc1, desc2, where) {
-        console.log("addqq:", where);
         if ( desc2 === undefined ) {
             desc2 = desc1;
         }

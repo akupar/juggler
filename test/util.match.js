@@ -1,6 +1,5 @@
 const assert = require("assert");
 const util   = require("../src/util");
-const eq     = require("../src/eq");
 const types  = require("../src/types");
 
 describe("util.match", function() {
@@ -200,203 +199,203 @@ describe("util.match", function() {
             assert.equal(score, 0);
         });
 
-        it("should match whole object if __match_up pragma is used and object contains all values", function() {
-            const vars = {};
+        /* it("should match whole object if __match_up pragma is used and object contains all values", function() {
+         *     const vars = {};
 
-            const score = util.match(
-                {
-                    oper: "+",
-                    0: {
-                        __match_up: "a",
-                        value: 3
-                    },
-                    1: {
-                        __match_up: "b",
-                        value: 3.14
-                    }
-                },
-                {
-                    oper: "+",
-                    0: {
-                        oper: "(val)",
-                        0: 3,
-                        value: 3
-                    },
-                    1: {
-                        oper: "(symbol)",
-                        0: "pi",
-                        value: 3.14
-                    }
-                },
-                vars
-            );
-            
-            assert.equal(score > 0, true);
-            assert.deepEqual(vars, {
-                "a": {
-                    oper: "(val)",
-                    0: 3,
-                    value: 3
-                },
-                "b": {
-                    oper: "(symbol)",
-                    0: "pi",
-                    value: 3.14
-                }
-            });
-        });
+         *     const score = util.match(
+         *         {
+         *             oper: "+",
+         *             0: {
+         *                 __match_up: "a",
+         *                 value: 3
+         *             },
+         *             1: {
+         *                 __match_up: "b",
+         *                 value: 3.14
+         *             }
+         *         },
+         *         {
+         *             oper: "+",
+         *             0: {
+         *                 oper: "(val)",
+         *                 0: 3,
+         *                 value: 3
+         *             },
+         *             1: {
+         *                 oper: "(symbol)",
+         *                 0: "pi",
+         *                 value: 3.14
+         *             }
+         *         },
+         *         vars
+         *     );
+         *     
+         *     assert.equal(score > 0, true);
+         *     assert.deepEqual(vars, {
+         *         "a": {
+         *             oper: "(val)",
+         *             0: 3,
+         *             value: 3
+         *         },
+         *         "b": {
+         *             oper: "(symbol)",
+         *             0: "pi",
+         *             value: 3.14
+         *         }
+         *     });
+         * });
+         * 
+         * it("shouldn't match whole object if __match_up pragma is used and object doesn't contain all values", function() {
+         *     const vars = {};
+
+         *     const score = util.match(
+         *         {
+         *             oper: "+",
+         *             0: {
+         *                 __match_up: "a",
+         *                 value: 3,
+         *                 nonexistent: 3
+         *             },
+         *             1: {
+         *                 __match_up: "b",
+         *                 value: 3.14
+         *             }
+         *         },
+         *         {
+         *             oper: "+",
+         *             0: {
+         *                 oper: "(val)",
+         *                 0: 3,
+         *                 value: 3
+         *             },
+         *             1: {
+         *                 oper: "(symbol)",
+         *                 0: "pi",
+         *                 value: 3.14
+         *             }
+         *         },
+         *         vars
+         *     );
+
+         *     assert.equal(score, 0);
+         * }); */
         
-        it("shouldn't match whole object if __match_up pragma is used and object doesn't contain all values", function() {
-            const vars = {};
+        /* it("shouldn't match object if __match_up pragma is used and object doesn't contain all values", function() {
+         *     const vars = {};
 
-            const score = util.match(
-                {
-                    oper: "+",
-                    0: {
-                        __match_up: "a",
-                        value: 3,
-                        nonexistent: 3
-                    },
-                    1: {
-                        __match_up: "b",
-                        value: 3.14
-                    }
-                },
-                {
-                    oper: "+",
-                    0: {
-                        oper: "(val)",
-                        0: 3,
-                        value: 3
-                    },
-                    1: {
-                        oper: "(symbol)",
-                        0: "pi",
-                        value: 3.14
-                    }
-                },
-                vars
-            );
+         *     const score = util.match(
+         *         {
+         *             oper: "+",
+         *             0: types.int("a"),
+         *             1: eq.contains("b", {
+         *                 _approx: eq.any
+         *             })
+         *         },
+         *         {
+         *             oper: "+",
+         *             0: types.int(13),
+         *             1: {
+         *                 item: "(sym)",
+         *                 0: "?π",
+         *                 display: "π"
+         *             }
+         *         },
+         *         vars
+         *     );
 
-            assert.equal(score, 0);
-        });
-        
-        it("shouldn't match object if __match_up pragma is used and object doesn't contain all values", function() {
-            const vars = {};
+         *     assert.equal(score, 0);
+         * });
+         * 
+         * it("empty string can be used as a match all inside __match_up pragmas", function() {
+         *     const vars = {};
 
-            const score = util.match(
-                {
-                    oper: "+",
-                    0: types.int("a"),
-                    1: eq.contains("b", {
-                        _approx: eq.any
-                    })
-                },
-                {
-                    oper: "+",
-                    0: types.int(13),
-                    1: {
-                        item: "(sym)",
-                        0: "?π",
-                        display: "π"
-                    }
-                },
-                vars
-            );
+         *     const score = util.match(
+         *         {
+         *             oper: "+",
+         *             0: {
+         *                 __match_up: "a",
+         *                 value: eq.any
+         *             },
+         *             1: {
+         *                 __match_up: "b",
+         *                 value: eq.any
+         *             }
+         *         },
+         *         {
+         *             oper: "+",
+         *             0: {
+         *                 oper: "(val)",
+         *                 0: 3,
+         *                 value: 3
+         *             },
+         *             1: {
+         *                 oper: "(symbol)",
+         *                 0: "pi",
+         *                 value: 3.14
+         *             }
+         *         },
+         *         vars
+         *     );
+         *     
+         *     assert.equal(score > 0, true);
+         *     assert.deepEqual(vars, {
+         *         "a": {
+         *             oper: "(val)",
+         *             0: 3,
+         *             value: 3
+         *         },
+         *         "b": {
+         *             oper: "(symbol)",
+         *             0: "pi",
+         *             value: 3.14
+         *         }
+         *     });
+         * });
 
-            assert.equal(score, 0);
-        });
-        
-        it("empty string can be used as a match all inside __match_up pragmas", function() {
-            const vars = {};
+         * it("contains function can be used to inject __match_up pragma", function() {
+         *     const vars = {};
 
-            const score = util.match(
-                {
-                    oper: "+",
-                    0: {
-                        __match_up: "a",
-                        value: eq.any
-                    },
-                    1: {
-                        __match_up: "b",
-                        value: eq.any
-                    }
-                },
-                {
-                    oper: "+",
-                    0: {
-                        oper: "(val)",
-                        0: 3,
-                        value: 3
-                    },
-                    1: {
-                        oper: "(symbol)",
-                        0: "pi",
-                        value: 3.14
-                    }
-                },
-                vars
-            );
-            
-            assert.equal(score > 0, true);
-            assert.deepEqual(vars, {
-                "a": {
-                    oper: "(val)",
-                    0: 3,
-                    value: 3
-                },
-                "b": {
-                    oper: "(symbol)",
-                    0: "pi",
-                    value: 3.14
-                }
-            });
-        });
-
-        it("contains function can be used to inject __match_up pragma", function() {
-            const vars = {};
-
-            const score = util.match(
-                {
-                    oper: "+",
-                    0: eq.contains("a", {
-                        value: eq.any
-                    }),
-                    1: eq.contains("b", {
-                        value: eq.any
-                    })
-                },
-                {
-                    oper: "+",
-                    0: {
-                        oper: "(val)",
-                        0: 3,
-                        value: 3
-                    },
-                    1: {
-                        oper: "(symbol)",
-                        0: "pi",
-                        value: 3.14
-                    }
-                },
-                vars
-            );
-            
-            assert.equal(score > 0, true);
-            assert.deepEqual(vars, {
-                "a": {
-                    oper: "(val)",
-                    0: 3,
-                    value: 3
-                },
-                "b": {
-                    oper: "(symbol)",
-                    0: "pi",
-                    value: 3.14
-                }
-            });
-        });
-
+         *     const score = util.match(
+         *         {
+         *             oper: "+",
+         *             0: eq.contains("a", {
+         *                 value: eq.any
+         *             }),
+         *             1: eq.contains("b", {
+         *                 value: eq.any
+         *             })
+         *         },
+         *         {
+         *             oper: "+",
+         *             0: {
+         *                 oper: "(val)",
+         *                 0: 3,
+         *                 value: 3
+         *             },
+         *             1: {
+         *                 oper: "(symbol)",
+         *                 0: "pi",
+         *                 value: 3.14
+         *             }
+         *         },
+         *         vars
+         *     );
+         *     
+         *     assert.equal(score > 0, true);
+         *     assert.deepEqual(vars, {
+         *         "a": {
+         *             oper: "(val)",
+         *             0: 3,
+         *             value: 3
+         *         },
+         *         "b": {
+         *             oper: "(symbol)",
+         *             0: "pi",
+         *             value: 3.14
+         *         }
+         *     });
+         * });
+         */
         
         it("shouldn't match if first has all the fields of second and extra", function() {
             const vars = {};
@@ -411,8 +410,51 @@ describe("util.match", function() {
         });
 
         
-        
     });
+
+    describe("optional fields", function() {
+        it("should match if optional field is missing", function() {
+            const vars = {};
+            const score = util.match({
+                oper: "/",
+                0: "a",
+                1: "b",
+                "?_approx": "approx"
+            },
+                                     {
+                                         oper: "/",
+                                         0: types.int(3),
+                                         1: types.int(5)
+                                     },
+                                     vars);
+            
+            assert.equal(score > 0, true);
+            assert.deepEqual(vars, { a: types.int(3), b: types.int(5) });
+        });
+
+        it("should match if optional field is present", function() {
+            const vars = {};
+            const score = util.match({
+                oper: "/",
+                0: "a",
+                1: "b",
+                "?_approx": "approx"
+            },
+                                     {
+                                         oper: "/",
+                                         0: types.int(3),
+                                         1: types.int(5),
+                                         _approx: 0.6
+                                     },
+                                     vars);
+            
+            assert.equal(score > 0, true);
+            assert.deepEqual(vars, { a: types.int(3), b: types.int(5), approx: 0.6 });
+        });
+        
+
+    });
+
     
 });    
 

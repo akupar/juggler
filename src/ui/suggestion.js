@@ -22,10 +22,10 @@ export async function handlePickTransform() {
     if ( ! selectedExpression ) {
         throw new Error("Ei valittua");
     }
-    console.log("SELECTEDeXPRESSION:", selectedExpression);
-    console.log("TRANSFORMeQUATION:", transformEquation);
+    //console.log("SELECTEDeXPRESSION:", selectedExpression);
+    //console.log("TRANSFORMeQUATION:", transformEquation);
     const unbound = getUnboundVariables(transformEquation);
-    console.log("UNBOUND:", unbound);
+    //console.log("UNBOUND:", unbound);
     let vars = {};
 
     if ( unbound.length > 0 ) {
@@ -38,9 +38,9 @@ export async function handlePickTransform() {
             //console.log("prompt returned: false");
             return;
         }
-        console.log("VARS:", vars);
+        //console.log("VARS:", vars);
         apply(selectedExpression, vars);
-        console.log("APPLIED:", selectedExpression);
+        //console.log("APPLIED:", selectedExpression);
     }
     
     const result = transform2(transformEquation[0], transformEquation[1], selectedExpression, vars);
