@@ -110,6 +110,22 @@ export function hasRequiredKeysOf(listF, listE) {
     return false;
 }
 
+export function hasRequiredKeysOf(listF, listE) {
+    const isSetsEqual = (a, b) => a.size === b.size && [...a].every(value => b.has(value));
+
+    const Eall = new Set(listE);
+    const Ereq = new Set(listE.filter(elem => !elem.startsWith("_")));
+    const Fall = new Set(listF);
+
+
+    // If E has all the required keys of F and no extra than all possible keys of F.
+    if ( isSetsEqual(difference(Freq, Eall), difference(Eall, Fall)) ) {
+        return true;
+    }
+
+    return false;
+}
+
 
 export function deepEqual(expr1, expr2) {
     if ( typeof(expr1) !== typeof(expr2) ) {
@@ -123,7 +139,7 @@ export function deepEqual(expr1, expr2) {
     }
 
     const keys1 = getKeys(expr1).filter((key) => ! key.startsWith("__")),
-        keys2 = getKeys(expr2).filter((key) => ! key.startsWith("__"));
+          keys2 = getKeys(expr2).filter((key) => ! key.startsWith("__"));
 
     if ( ! listsEqual(keys1, keys2) ) {
         return (expr1 === expr2);
@@ -280,16 +296,18 @@ export function apply(formula, vars) {
         return formula;
     }
 
-    for ( let key of keys ) {
-        if ( isVariable(formula[key]) ) {
-            let name = formula[key];
+    for ( let keyDef of keys ) {
+        const key = keyDef.replace(/^\?/, "");
+        
+        if ( isVariable(formula[keyDef]) ) {
+            let name = formula[keyDef];
             if ( vars[name] !== undefined ) {
                 out[key] = vars[name];
-            } else {
-                out[key] = formula[key];
+            } else if ( keyDef[0] !== "?" ) { // ei valinnainen kenttä
+                out[key] = formula[keyDef];
             }
         } else {
-            out[key] = apply(formula[key], vars) || formula[key];
+            out[key] = apply(formula[keyDef], vars) || formula[keyDef];
         }
         ////console.log("APPLY -> key:", out[key]);
     }
@@ -340,6 +358,8 @@ export function transform2(equationIn, equationOut, expression, vars = {}) {
         }
         throw new Error("Not matching");
     }
+
+    console.log("VARS:", vars);
     if ( debug ) {
         console.log("MATCH");
     }

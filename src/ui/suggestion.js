@@ -48,6 +48,10 @@ export async function handlePickTransform() {
         return;
     }
 
+    if ( selectedExpression._approx !== undefined ) {
+        result._approx = selectedExpression._approx;
+    }
+
     canvas.replaceSelectionWithEquation(result);
     
 }

@@ -13,9 +13,27 @@ function clear() {
     $table.html("");
 }
 
+/**
+ * Removes optional fields from the displayed equation. (Full version is kept in data(equation).
+ **/
+function removeOptional(expr) {
+    const copy = { ...expr };
+
+    for ( let item in copy ) {
+        if ( item.startsWith("?") ) {
+            console.log("DELETE:", item);
+            delete copy[item];
+        } else if ( typeof(copy[item]) === "object" ) {
+            copy[item] = removeOptional(copy[item]);
+        }
+    }
+
+    return copy;
+}
+
 function add({ equation, score, description }) {
     equation.oper = "&rarr;";
-    const elem = format(equation);
+    const elem = format(removeOptional(equation));
     $(elem).addClass("suggestion");
     $(elem).data("equation", equation);
     $(elem).attr("score", score);

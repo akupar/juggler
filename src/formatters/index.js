@@ -319,7 +319,8 @@ formatters.addEquation({
     oper: "->",
     0: {
         oper: "+",
-        0: "a"
+        0: "a",
+        "?_approx": "approx"
     },
     1: (vars) => {
         let a = format(vars["a"]),
@@ -329,6 +330,7 @@ formatters.addEquation({
                 {
                     oper: "+",
                     0: "#" + a.getAttribute("id"),
+                    _approx: vars["approx"]
                 }
             );
 

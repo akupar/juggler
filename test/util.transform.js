@@ -181,5 +181,154 @@ describe('util.transform', function() {
             
         });
     });
-});    
+
+
+    describe('optional keys', function() {
+        it('optional keys should be ignored if not given', function() {
+            assert.deepEqual(
+                util.transform(
+                    {
+                        oper: "=",
+                        0: {
+                            oper: "/",
+                            0: "a",
+                            1: "b",
+                            "?_approx": "approx"
+                        },
+                        1: {
+                            oper: "/",
+                            0: "b",
+                            1: "a",
+                            "?_approx": "approx"
+                        }
+                    },
+                    {
+                        oper: "/",
+                        0: 9,
+                        1: 8
+                    }
+                ),
+                {
+                    oper: "/",
+                    0: 8,
+                    1: 9
+                }
+            );
+        });
+
+        it('optional keys should be copied if given', function() {
+            assert.deepEqual(
+                util.transform(
+                    {
+                        oper: "=",
+                        0: {
+                            oper: "/",
+                            0: "a",
+                            1: "b",
+                            "?_approx": "approx"
+                        },
+                        1: {
+                            oper: "/",
+                            0: "b",
+                            1: "a",
+                            "?_approx": "approx"
+                        }
+                    },
+                    {
+                        oper: "/",
+                        0: 9,
+                        1: 8,
+                        _approx: 1.125
+                    }
+                ),
+                {
+                    oper: "/",
+                    0: 8,
+                    1: 9,
+                    _approx: 1.125
+                }
+            );
+        });
+    });
+
+    describe('optional keys 2', function() {
+        it('?? optional keys should be??', function() {
+            assert.deepEqual(
+                util.transform(
+                    {
+                        oper: "=",
+                        0: {
+                            oper: "/",
+                            0: "a",
+                            1: "b",
+                            "_approx": "approx"
+                        },
+                        1: {
+                            oper: "/",
+                            0: "b",
+                            1: "a",
+                            "_approx": "approx"
+                        }
+                    },
+                    {
+                        oper: "/",
+                        0: 9,
+                        1: 8
+                    }
+                ),
+                {
+                    oper: "/",
+                    0: 8,
+                    1: 9
+                }
+            );
+        });
+
+        it('optional keys should be copied if given', function() {
+            assert.deepEqual(
+                util.transform(
+                    {
+                        oper: "=",
+                        0: {
+                            oper: "/",
+                            0: "a",
+                            1: "b",
+                        },
+                        1: {
+                            oper: "/",
+                            0: "b",
+                            1: "a",
+                        }
+                    },
+                    {
+                        oper: "/",
+                        0: 9,
+                        1: 8,
+                        _approx: 1.125
+                    }
+                ),
+                {
+                    oper: "/",
+                    0: 8,
+                    1: 9,
+                    _approx: 1.125
+                }
+            );
+        });
+    });
+    
+    describe('dumdi', function() {
+        it('should move _approx', function() {
+            assert.deepEqual(
+                util.transform2(
+                    "a",
+                    { oper: "+", 0: "a" },
+                    99
+                ),
+                { oper: "+", 0: 99 }
+            );
+        });
+
+    });
+});        
 

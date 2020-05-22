@@ -455,6 +455,30 @@ describe("util.match", function() {
 
     });
 
+    describe("optional fields 2", function() {
+        
+        it("should match if optional field is present", function() {
+            const vars = {};
+            const score = util.match({
+                oper: "/",
+                0: "a",
+                1: "b",
+            },
+                                     {
+                                         oper: "/",
+                                         0: types.int(3),
+                                         1: types.int(5),
+                                         _approx: 0.6
+                                     },
+                                     vars);
+            
+            assert.equal(score > 0, true);
+            assert.deepEqual(vars, { a: types.int(3), b: types.int(5), approx: 0.6 });
+        });
+        
+
+    });
+
     
 });    
 

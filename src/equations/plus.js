@@ -6,9 +6,9 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "+",
-        0: "x"
+        0: "x",
     },
-    1: "x"
+    1: "x",
 },
                   "Toggle plus sign"
 );
@@ -70,12 +70,14 @@ store.addEquation({
     0: {
         oper: "+",
         0: "a",
-        1: "b" 
+        1: "b",
+        "?_approx": "approx"
     },
     1: {
         oper: "+",
         0: "b",
-        1: "a" 
+        1: "a",
+        "?_approx": "approx"
     }
 }, "Vaihda paikkoja");
 
