@@ -27,8 +27,10 @@
         </div>
       </div>
       <div style="width: 50%; margin: auto; text-align: center;">
+        <button class="new-button">New</button>
         <span id="undo-pos"></span>
-        <button class="undo-button">Undo</button> <button class="redo-button">Redo</button>
+        <button class="undo-button">Undo</button>
+        <button class="redo-button">Redo</button>
       </div>
       
       <div class="right-panel" style="position: absolute; right: 10px; border: solid black 1px;">
@@ -66,6 +68,15 @@
             <fieldset>
               <label for="number">Number</label>
               <input type="number" name="number" class="text ui-widget-content ui-corner-all" /><br/>
+            </fieldset>
+          </form>
+        </div>
+        <div class="dialog" id="dialog-input-expression" title="Input values">
+          <form>
+            <fieldset>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" class="input-preview"></math>
+              <label for="expression">Insert expression</label>
+              <input type="text" name="expression" class="text ui-widget-content ui-corner-all" />
             </fieldset>
           </form>
         </div>
