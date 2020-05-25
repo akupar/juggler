@@ -99,6 +99,7 @@ export function format(expr) {
     const formatter = equation ? equation[1] : defaultFormatter;
 
     const elem = formatter(vars, expr);
+    console.log("ODNE");
 
     return elem;
 }

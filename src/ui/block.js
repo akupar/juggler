@@ -268,13 +268,16 @@ export function createBlock(elemName, content, expr) {
 }
 
 export function showSuggestions() {
+
     var expr = deformat(this);
+
     debug.showExpression(this, expr);
     
     suggestions.clear();
 
     let found = false;
     symbolStore.allMatches(expr).forEach(function ({ equation, vars, score, description }) {
+
         suggestions.add({ equation, vars, score, description });
         found = true;
     });
@@ -286,7 +289,6 @@ export function showSuggestions() {
     }
 
     generalStore.allMatches(expr).forEach(function ({ equation, vars, score, description }) {
-
         
         suggestions.add({ equation, vars, score, description });
     });

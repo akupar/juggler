@@ -16,7 +16,7 @@ import formatters from "./store";
 import { $mathml } from "../ui/mathml";
 import { createBlock } from "../ui/block";
 import { bind } from "../util";
-import { variable } from "../types";
+import { symbol, variable } from "../types";
 
 //
 export default formatters;
@@ -932,48 +932,45 @@ formatters.addEquation({
         start: variable("start"),
         end: variable("end"),
         concat: variable("concat"),
-        vble: variable("vble") 
+        vble: symbol(variable("vble"))
     },
 
     1: ({ expr, start, end, concat, vble }) => {
-        return createBlock([
-            "div",                
-            format(bind(
+        console.log("...:", { expr, start, end, concat, vble });
+            return createBlock(
+                "mpadded",
+                [
+                    format(
+                        bind(
+                            {
+                                [vble]: start
+                            },
+                            expr
+                        )
+                    ),
+                " ",
+                concat,                
+                " ... ",
+                concat,
+                " ",
+                    format(
+                        bind(
+                            {
+                                [vble]: end 
+                            },
+                            expr
+                        )
+                    )
+                ],
                 {
-                    symbol: vble,
-                    val: start 
-                },
-                expr
-            )),
-            " ",
-            concat,
-            " ",
-            format(bind(
-                {
-                    symbol: vble,
-                    val: start + 1 
-                },
-                expr
-            )),
-            concat,                
-            " ... ",
-            concat,
-            " ",
-            format(bind(
-                {
-                    symbol: vble,
-                    val: end 
-                },
-                expr
-            ))
-        ], {
-            oper: "...",
-            expr: expr,
-            start: start,
-            end: end,
-            concat: concat,
-            vble: vble
-        });
+                    oper: "...",
+                    expr: expr,
+                    start: start,
+                    end: end,
+                    concat: concat,
+                    vble: symbol(vble)
+                }
+            );
     }
 });
 

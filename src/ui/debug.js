@@ -42,7 +42,7 @@ export function showExpression(elem, expr) {
     let expandedData = "";
     if ( expr ) {
         expandedData = JSON.stringify(expr, null, 2);
-        bucket = window.equations.getAddr(expr);
+        bucket = window.equations.getAddress(expr);
     }
     
     $("#status-expression").html(

@@ -1,5 +1,5 @@
 import {
-    getUnboundVariables,
+    //getUnboundVariables,
     deepCopy,
     deepEqual,
     isVariable,
@@ -14,10 +14,10 @@ export default function EquationStore(onMember, pathMember) {
     this.buckets = {};
 
 
-    function getPath(eq) {
+    function getPath(expr) {
         const path = [];
 
-        let current = eq;
+        let current = expr;
         do {
             let memberValue = current[onMember] || "";
             // If the operator is variable, truncate the path so the equation
@@ -36,31 +36,26 @@ export default function EquationStore(onMember, pathMember) {
         return path;
     }
 
-    function getAddress(eq) {
-        return getPath(eq).join(".");
-    }
-
-    // TILAPÄINEN
-    this.getAddr = function (eq) {
-        return getAddress(eq);
+    this.getAddress = function(expr) {
+        return getPath(expr).join(".");
     };
-    
+
     /**
      * Checks the equation can be used from 0 to 1 direction.
      * Returns false if right side has extra variables, otherwise true.
      **/
-    function checkDirectedEquation(equation) {
-        if ( getUnboundVariables(equation).length > 2 ) {
-            return false;
-        }
+    function checkDirectedEquation(/*equation*/) {
+        //if ( getUnboundVariables(equation).length > 2 ) {
+        //return false;
+        //}
         
         return true;
     }
 
     
     this.addDirectedEquation = function(eq, desc, where) {
-        const bucketAddress = getAddress(eq[0]);
-
+        const bucketAddress = this.getAddress(eq[0]);
+        //console.log("AD:", bucketAddress);
         if ( ! this.buckets[bucketAddress] ) {
             this.buckets[bucketAddress] = [];
         }
@@ -71,7 +66,7 @@ export default function EquationStore(onMember, pathMember) {
         copy.__where = where;
         
         this.buckets[bucketAddress].push(copy);
-        ////console.log("ADDED TO (", bucketAddress, ") :", copy);
+        //console.log("ADDED TO (", bucketAddress, ") :", copy);
     };
 
     
@@ -80,19 +75,27 @@ export default function EquationStore(onMember, pathMember) {
         const { where, desc } = params;
         const eq0 = params[0];
         const eq1 = params[1];
+        let desc0 = desc;
+        let desc1;
+        if ( typeof(desc) === "object" ) {
+            desc0 = desc[0];
+            desc1 = desc[1];
+        }
+        
+        //console.log("params:", params, desc0, desc1, where);
         
         if ( typeof(eq1) === "function" ) {
             this.addEquation({
                 oper: "->",
                 0: eq0,
                 1: eq1
-            }, desc, null, where);
+            }, desc0, null, where);
         } else {
             this.addEquation({
                 oper: "=",
                 0: eq0,
                 1: eq1
-            }, (desc.length === undefined ? desc : desc[0]), desc[1], where);
+            }, desc0, desc1, where);
         }
     };
 
@@ -116,9 +119,12 @@ export default function EquationStore(onMember, pathMember) {
         
         if ( checkDirectedEquation(equation) ) {
             this.addDirectedEquation(equation, desc1, where);
+            //console.log("ADDED DIR EQ:", equation);
+        } else {
+            console.log("Huom. Ei lisätty koska tarkistus ei palauttanut true");
         }
         
-        ////console.log("ADDED DIR EQ:", equation);
+
         if ( equation.oper === "="
           || equation.oper === "<=>" ) {
             var reversed = {
@@ -126,9 +132,12 @@ export default function EquationStore(onMember, pathMember) {
                 0: equation[1],
                 1: equation[0]
             };
-            ////console.log("ADDED DIR EQ:", reversed);
+            
             if ( checkDirectedEquation(reversed) ) {
                 this.addDirectedEquation(reversed, desc2, where);
+                //console.log("ADDED DIR EQ:", reversed);
+            } else {
+                console.log("Huom. Ei lisätty koska tarkistus ei palauttanut true");
             }
         }
     };
@@ -245,6 +254,12 @@ export default function EquationStore(onMember, pathMember) {
 //        } else {
 //            this.debug = false;
 //        }
+
+//         if ( this.getAddress(expression).startsWith("+.+.+") ) {
+//             this.debug = true;
+//         } else {
+//             this.debug = false;
+//         }
         
         if ( this.debug ) {
             console.log("allMatches: Expression:", JSON.stringify(expression), "Path:", path);

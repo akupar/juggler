@@ -420,23 +420,34 @@ export function transform(equation, expression, vars = {}) {
     return transform2(equation[0], equation[1], expression, vars);
 }
 
+function isSymbol(expr) {
+    return (expr.item && expr.item === "(sym)");
+}
+
+/**
+ * Replace symbol with value.
+ **/
+export function replaceSymbols(expr, symbolValues) {
+    var copy = {};
+    
+    for ( let key of getKeys(expr) ) {
+        if ( isSymbol(expr[key]) && expr[key][0] in symbolValues ) {
+            copy[key] = symbolValues[expr[key][0]];
+            console.log("replaced", expr[key], "with", symbolValues[expr[key][0]]);
+        } else if ( typeof(expr[key]) === "object" ) {
+            copy[key] = replaceSymbols(expr[key], symbolValues);
+        } else {
+            copy[key] = expr[key];
+        }
+    }
+    return copy;
+}
 
 export function bind(symbols, expr) {
-    var symbols2 = [];
-    if ( typeof(symbols) !== "object" ) {
-        symbols2[0] = symbols;
-    } else {
-        symbols2 = symbols;
-    }
+    console.log("BIND:", symbols, expr);
 
-    var vars = {};
-    
-    for ( let item of symbols2 ) {
-        vars[item.symbol] = item.val;
-    }
-    
-    var n = apply(expr, vars);
-    
+    var n = replaceSymbols(expr, symbols);
+    console.log("GOT N:", n);
     return n;
 }
 
