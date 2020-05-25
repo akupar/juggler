@@ -7,7 +7,7 @@
  * 
  **/
 
-//import "./constants";        // π, e, ...
+import "./constants";        // π, e, ...
 //import "./trigonometry";     // sin, cos, tan and friends TODO eri tiedostoihin
 //import "./complex";          // complex numbers a + bi
 //import "./abs";              // absolute value |x|
@@ -17,7 +17,7 @@ import "./logarithm.js";     // logarithm operator
 import "./root.js";          // (root) operator
 //import "./power.js";         // ^ or pow
 //import "./mixedNumeral.js";  // displaying fraction as mixed numeral
-//import "./div.js";           // operators / and :
+import "./div.js";           // operators / and :
 //import "./mult.js";          // multiplication operator ×
 //import "./minus.js";         // unary and binary minus (-)
 //import "./plus.js";          // unary and binary plus (+)

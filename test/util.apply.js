@@ -40,16 +40,16 @@ describe('util.apply', function() {
     describe('when given variables not found in expression', function() {
         
         it('should return integers untouched', function() {
-            assert.deepEqual(util.apply(1, { "$b": auto(5) }), 1);
+            assert.deepEqual(util.apply(1, { "b": auto(5) }), 1);
         });
 
         it('should return symbols untouched', function() {
-            assert.deepEqual(util.apply(variable("a"), { "$b": auto(5) }), variable("a"));
+            assert.deepEqual(util.apply(variable("a"), { "b": auto(5) }), variable("a"));
         });
         
         it('should return val expressions untouched', function() {
             assert.deepEqual(
-                util.apply(auto(3), { "$b": auto(5) }),
+                util.apply(auto(3), { "b": auto(5) }),
                 auto(3)
             );
         });
@@ -63,7 +63,7 @@ describe('util.apply', function() {
                         1: auto(3)
                     },
                     {
-                        "$b": auto(5)
+                        "b": auto(5)
                     }
                 ),
                 {
@@ -83,7 +83,7 @@ describe('util.apply', function() {
                 util.apply(
                     variable("a"),
                     {
-                        "$a": auto(5)
+                        "a": auto(5)
                     }
                 ),
                 auto(5)
@@ -98,7 +98,7 @@ describe('util.apply', function() {
                         0: variable("a")
                     },
                     {
-                        "$a": 5
+                        "a": 5
                     }
                 ),
                 auto(5)
@@ -120,8 +120,8 @@ describe('util.apply', function() {
                         }
                     },
                     {
-                        "$a": 5,
-                        "$b": 3
+                        "a": 5,
+                        "b": 3
                     }
                 ),
                 { oper: "+",
@@ -147,8 +147,8 @@ describe('util.apply', function() {
                         }
                     },
                     {
-                        "$a": 5,
-                        "$b": 5
+                        "a": 5,
+                        "b": 5
                     }
                 ),
                 {
@@ -164,8 +164,8 @@ describe('util.apply', function() {
                 util.apply(
                     { oper: "+", 0: variable("a"), 1: variable("b") },
                     {
-                        "$a": auto(5),
-                        "$b": auto(3)
+                        "a": auto(5),
+                        "b": auto(3)
                     }
                 ),
                 { oper: "+", 0: auto(5), 1: auto(3) }
@@ -177,7 +177,7 @@ describe('util.apply', function() {
                 util.apply(
                     { oper: "+", 0: variable("a"), 1: variable("a") },
                     {
-                        "$a": auto(0),
+                        "a": auto(0),
                     }
                 ),
                 { oper: "+", 0: auto(0), 1: auto(0) }

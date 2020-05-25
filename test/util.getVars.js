@@ -1,13 +1,14 @@
 const assert = require('assert');
 const util   = require('../src/util');
+const { variable } = require('../src/types');
 
 describe('util.getVariables', function() {
     it('simple expression', function() {
         assert.deepEqual(
             util.getVariables(
-                "$a"
+                variable("a")
             ),
-            [ "$a" ]
+            [ "a" ]
         );
     });
 
@@ -16,11 +17,11 @@ describe('util.getVariables', function() {
             util.getVariables(
                 {
                     oper: '+',
-                    0: "$a",
+                    0: variable("a"),
                     1: 1
                 }
             ),
-            [ "$a" ]
+            [ "a" ]
         );
     });
 

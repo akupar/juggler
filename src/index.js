@@ -115,7 +115,7 @@ $(document).ready(function () {
             0: auto(3),
             1: {
                 item: "(sym)",
-                0: "?π",
+                0: "π",
                 _approx: 3.14
             }
         }

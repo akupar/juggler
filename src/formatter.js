@@ -1,5 +1,5 @@
 import formatters from "./formatters/index";
-import { getKeys, isVariable } from "./util";
+import { getBasenameOfVariable, getKeys, isVariable } from "./util";
 import {
     createBlock,
     getEq
@@ -86,7 +86,7 @@ export function format(expr) {
     if ( typeof(expr) === "function" ) {
         return createBlock("mtext", expr.displayText || expr.name, null);
     } else if ( typeof(expr) === "string" && isVariable(expr) ) {
-        return createVariableBlock(expr);
+        return createVariableBlock(getBasenameOfVariable(expr));
     } else if ( typeof(expr) === "string" ) {
         return createBlock((Number.isInteger(expr) ? "mn" : "mi"), expr, expr);
     } else if ( typeof(expr) !== "object" ) {

@@ -33,7 +33,7 @@ store.addEquation2({
 
 
 // log_k k^x = x
-store.addEquation2({
+store.addEquationOneWay({
     0: {
         oper: "log",
         0: variable("k"),
@@ -191,18 +191,18 @@ store.addEquation2({
         1: int(variable("a")),
         "?_approx": variable("approx")
     },
-    1: setDisplayTextAndReturn("c | ~c", function c({ $a, $k }) {
-        const r = Math.log($a) / Math.log($k);
+    1: setDisplayTextAndReturn("c | ~c", function c({ a, k }) {
+        const r = Math.log(a) / Math.log(k);
         
-        console.log("R:", r, r ^ $k, $a);
-        if ( chomp(r) ^ $k === $a ) {
+        console.log("R:", r, r ^ k, a);
+        if ( chomp(r) ^ k === a ) {
             return int(r);
         }
 
         return {
             oper: "log",
-            0: int($k),
-            1: int($a),
+            0: int(k),
+            1: int(a),
             _approx: r,
             display: ":approx"
         };

@@ -9,13 +9,17 @@ export function defaultPrompt(vars, unbound) {
             val = unboundVariable;
         }
 
-        if ( Number.isInteger(val) ) {
+        const num = parseInt(val);
+        if ( num.toString() === val ) {
             vars[unboundVariable] = {
                 item: "(val)",
                 0: val
             };
         } else {
-            vars[unboundVariable] = val;
+            vars[unboundVariable] = {
+                item: "(sym)",
+                0: val
+            };
         }
     }
 

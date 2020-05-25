@@ -61,19 +61,19 @@ store.addEquation2({
         1: int(variable("b")),
         "?_approx": variable("approx")
     },
-    1: setDisplayTextAndReturn("c | ~c", function c({ $a, $b }) {
+    1: setDisplayTextAndReturn("c | ~c", function c({ a, b }) {
         let rootfunc;
-        if ( $b === 2 ) {
+        if ( b === 2 ) {
             rootfunc = x => Math.sqrt(x);
-        } else if ( $b === 3 ) {
+        } else if ( b === 3 ) {
             rootfunc = x => Math.cbrt(x);
         } else {
-            rootfunc = x => Math.pow(x, 1/$b);
+            rootfunc = x => Math.pow(x, 1/b);
         }
         
-        const r = rootfunc($a);
+        const r = rootfunc(a);
         
-        if ( Math.pow(chomp(r), $b) === $a ) {
+        if ( Math.pow(chomp(r), b) === a ) {
                 return {
                     item: "(val)",
                     0: r
@@ -82,14 +82,14 @@ store.addEquation2({
 
         return {
             oper: "(root)",
-            0: int($a),
-            1: int($b),
+            0: int(a),
+            1: int(b),
             _approx: r,
             display: ":approx"
         };
     }),
-    where: ({ $approx }) => {
-        return !$approx;
+    where: ({ approx }) => {
+        return !approx;
     },
     desc: "Calculate approximate value of root"
 });

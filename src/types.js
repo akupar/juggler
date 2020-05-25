@@ -2,7 +2,7 @@
 export function func(name) {
     return {
         item: "(func)",
-        0: "?" + name
+        0: name
     };
 }
 
@@ -34,7 +34,7 @@ export function symbol(sym) {
 export function im(sym) {
     return {
         item: "(imaginary)",
-        0: "?" + sym
+        0: sym
     };
 }
 

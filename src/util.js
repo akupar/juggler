@@ -80,6 +80,11 @@ export function isVariable(elem) {
     return false;
 }
 
+export function getBasenameOfVariable(variableName) {
+    return variableName.substr(1);
+}
+
+
 function isExpression(elem) {
     if ( typeof(elem) === "object" ) {
         return true;
@@ -208,6 +213,8 @@ export function deepEqual(expr1, expr2) {
     return true;
 }
 
+
+
 /**
  * Vertaa vastaako `input` `formulaa` ja kirjoittaa muuttujat `varsiin`, jos annettu.
  * Palauttaa 0, jos lausekkeet eivät mätsää, muuten arvon joka kertoo kuinka paljon mätsäävää oli.
@@ -235,7 +242,7 @@ export function match(formula, input, vars = {}) {
         }
         
 
-        const name = formula;
+        const name = getBasenameOfVariable(formula);
         // Jos samanniminen muuttuja on jo tullut vastaan, tarkistetaan, että
         // niiden arvot täsmäävät.
         if ( vars[name] !== undefined ) {
@@ -326,10 +333,13 @@ export function apply(formula, vars) {
 
     if ( typeof(formula) === "function" ) {
         return formula(vars);
-    } else if ( typeof(formula) !== "object" ) {    // Vakio.
-        if ( vars[formula] !== undefined ) {
-            return vars[formula];
+    } else if ( typeof(formula) === "string" ) {    // Vakio.
+        const name = getBasenameOfVariable(formula);
+        if ( vars[name] !== undefined ) {
+            return vars[name];
         }
+        return formula;
+    } else if ( typeof(formula) !== "object" ) {    // Vakio.
         return formula;
     }
 
@@ -337,7 +347,7 @@ export function apply(formula, vars) {
         const key = keyDef.replace(/^\?/, "");
         
         if ( isVariable(formula[keyDef]) ) {
-            let name = formula[keyDef];
+            const name = getBasenameOfVariable(formula[keyDef]);
             if ( vars[name] !== undefined ) {
                 out[key] = vars[name];
             } else if ( keyDef[0] !== "?" ) { // ei valinnainen kenttä
@@ -358,7 +368,8 @@ export function apply(formula, vars) {
 function findVars(expression, vars) {
     
     if ( isVariable(expression) ) {
-        vars[expression] = true;
+        const name = getBasenameOfVariable(expression);
+        vars[name] = true;
         return;
     } else if ( expression === any || typeof(expression) !== "object" ) {
         return;

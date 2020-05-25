@@ -45,7 +45,7 @@ describe('equationStore', function() {
         assert.deepEqual(matches[0], {
             equation: store.buckets["+"][0],
             vars: {
-                "$x": auto(5)
+                "x": auto(5)
             },
             score: 3,
             description: "Toggle plus sign"
@@ -54,7 +54,7 @@ describe('equationStore', function() {
         assert.deepEqual(matches[1], {
             equation: store.buckets[""][0],
             vars: {
-                "$x": {
+                "x": {
                     oper: "+",
                     0: auto(5)
                 }

@@ -9,14 +9,14 @@ describe("util.match", function() {
         it("should match integer zero", function() {
             const vars = {};
             assert.equal(util.match(variable("a"), auto(0), vars), 1);
-            assert.deepEqual(vars, { "$a": auto(0) });
+            assert.deepEqual(vars, { "a": auto(0) });
         });
 
         it("should match integers", function() {
             const vars = {};
             assert.equal(util.match(variable("a"), auto(3), vars), 1);
             assert.deepEqual(vars, {
-                "$a": auto(3)
+                "a": auto(3)
             });
         });
 
@@ -24,19 +24,19 @@ describe("util.match", function() {
             const vars = {};
             assert.equal(util.match(variable("a"), variable("a"), vars), 1);
             // TODO pitääkö tulla muuttujaksi?
-            assert.deepEqual(vars, { "$a": variable("a") });
+            assert.deepEqual(vars, { "a": variable("a") });
         });
         
         it("should match val expressions", function() {
             const vars = {};
             assert.equal(util.match(variable("a"), auto(3), vars), 1);
-            assert.deepEqual(vars, { "$a": auto(3) });
+            assert.deepEqual(vars, { "a": auto(3) });
         });
         
         it("should match complex expressions", function() {
             const vars = {};
             assert.equal(util.match(variable("a"), { oper: "+", 0: auto(3), 1: auto(3) }, vars), 1);
-            assert.deepEqual(vars, { "$a": { oper: "+", 0: auto(3), 1: auto(3) } });
+            assert.deepEqual(vars, { "a": { oper: "+", 0: auto(3), 1: auto(3) } });
         });
     });
 
@@ -50,7 +50,7 @@ describe("util.match", function() {
             
             assert.equal(score > 0, true);
             assert.deepEqual(vars, {
-                "$a": 3
+                "a": 3
             });
         });
 
@@ -92,8 +92,8 @@ describe("util.match", function() {
             assert.equal(score > 0, true);
             
             assert.deepEqual(vars, {
-                "$a": 3,
-                "$b": auto(4)
+                "a": 3,
+                "b": auto(4)
             });
         });
 
@@ -134,7 +134,7 @@ describe("util.match", function() {
             
             assert.equal(score > 0, true);
             
-            assert.deepEqual(vars, { "$a": 3, "$b": auto(4) });
+            assert.deepEqual(vars, { "a": 3, "b": auto(4) });
         });
 
         it("should accept matching variables", function() {
@@ -157,7 +157,7 @@ describe("util.match", function() {
             );
             
             assert.equal(score > 0, true);
-            assert.deepEqual(vars, { "$a": 3 });
+            assert.deepEqual(vars, { "a": 3 });
         });
 
         it("should accept matching complex variables", function() {
@@ -177,7 +177,7 @@ describe("util.match", function() {
             );
             
             assert.equal(score > 0, true);
-            assert.deepEqual(vars, { "$a": auto(3) });
+            assert.deepEqual(vars, { "a": auto(3) });
         });
         
         it("should reject non matching variables", function() {
@@ -205,7 +205,7 @@ describe("util.match", function() {
 
         it("should reject non matching variables", function() {
             const vars = {
-                "$a": auto(3)
+                "a": auto(3)
             };
             
             assert.equal(
@@ -262,7 +262,7 @@ describe("util.match", function() {
             
             assert.equal(score > 0, true);
             assert.deepEqual(vars, {
-                "$a": {
+                "a": {
                     0: {
                         0: auto(3),
                         "item": "(val)"
@@ -301,7 +301,7 @@ describe("util.match", function() {
                                      vars);
             
             assert.equal(score > 0, true);
-            assert.deepEqual(vars, {"$a": auto(3),"$b": auto(5) });
+            assert.deepEqual(vars, {"a": auto(3),"b": auto(5) });
         });
 
         it("should match if optional field is present", function() {
@@ -322,9 +322,9 @@ describe("util.match", function() {
             
             assert.equal(score > 0, true);
             assert.deepEqual(vars, {
-                $a: auto(3),
-                $b: auto(5),
-                $approx: 0.6
+                a: auto(3),
+                b: auto(5),
+                approx: 0.6
             });
         });
         
@@ -349,7 +349,7 @@ describe("util.match", function() {
                                      vars);
             
             assert.equal(score > 0, true);
-            assert.deepEqual(vars, { "$a": auto(3), "$b": auto(5) });
+            assert.deepEqual(vars, { "a": auto(3), "b": auto(5) });
         });
         
 

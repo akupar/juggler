@@ -95,6 +95,19 @@ export default function EquationStore(onMember, pathMember) {
             }, (desc.length === undefined ? desc : desc[0]), desc[1], where);
         }
     };
+
+    this.addEquationOneWay = function (params) {
+        
+        const { where, desc } = params;
+        const eq0 = params[0];
+        const eq1 = params[1];
+        
+        this.addEquation({
+            oper: "->",
+            0: eq0,
+            1: eq1
+        }, desc, null, where);
+    };
     
     this.addEquation = function (equation, desc1, desc2, where) {
         if ( desc2 === undefined ) {
