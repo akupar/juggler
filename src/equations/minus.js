@@ -1,5 +1,5 @@
 import store from "./store";
-import { auto, int } from "../types";
+import { auto, int, variable } from "../types";
 
 // -(-a) = a
 store.addEquation({
@@ -8,7 +8,7 @@ store.addEquation({
         oper: "-",
         0: {
             oper: "-",
-            0: "a",
+            0: variable("a"),
         }
     },
     1: "a"
@@ -19,10 +19,10 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "+",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "-",
-            0: "a",
+            0: variable("a"),
         }
     },
     1: auto(0)
@@ -37,14 +37,14 @@ store.addEquation({
         oper: "+",
         0: {
             oper: "-",
-            0: "a",
+            0: variable("a"),
         },
-        1: "b"
+        1: variable("b")
     },
     1: {
         oper: "-",
-        0: "b",
-        1: "a"
+        0: variable("b"),
+        1: variable("a")
     }
 },
                   "Switch places",
@@ -57,11 +57,11 @@ store.addEquation({
     0: {
         oper: "-",
         0: auto(0),
-        1: "a"
+        1: variable("a")
     },
     1: {
         oper: "-",
-        0: "a"
+        0: variable("a")
     }
 },
                   "Muuta negatiiviseksi luvuksi",
@@ -73,15 +73,15 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "-",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "+",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "-",
-            0: "b"
+            0: variable("b")
         }
     }
 });
@@ -93,12 +93,12 @@ store.addEquation({
         oper: "-",
         0: {
             oper: "+",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "b"
+        1: variable("b")
     },
-    1: "a"
+    1: variable("a")
 });
 
 
@@ -107,20 +107,11 @@ store.addEquation({
     oper: "->",
     0: {
         oper: "-",
-        0: {
-            item: "(val)",
-            0: "a"
-        },
-        1: {
-            item: "(val)",
-            0: "b"
-        }
+        0: int(variable("a")),
+        1: int(variable("b"))
     },
-    1: function c(vars) {
-        return {
-            item: "(val)",
-            0: vars["a"] - vars["b"]
-        };
+    1: function c({ a, b }) {
+        return int(a - b);
     }
 },
                   "Vähennä");
@@ -133,17 +124,17 @@ store.addEquation({
         oper: "-",
         0: {
             oper: "+",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         }
     },
     1: {
         oper: "-",
         0: {
             oper: "-",
-            0: "a"
+            0: variable("a")
         },
-        1: "b"
+        1: variable("b")
     }
 },
                   "Apply minus to members",
@@ -156,8 +147,8 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "-",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "-",
@@ -165,9 +156,9 @@ store.addEquation({
             oper: "+",
             0: {
                 oper: "-",
-                0: "a"
+                0: variable("a")
             },
-            1: "b"
+            1: variable("b")
         }
     }
 },
@@ -180,9 +171,9 @@ store.addEquation({
 store.addEquation2({
     0: {
         oper: "-",
-        0: int("a"),
-        1: "b",
-        "?_approx": "approx"
+        0: int(variable("a")),
+        1: variable("b"),
+        "?_approx": variable("approx")
     },
     1: function c({ a, b }) {
         return {

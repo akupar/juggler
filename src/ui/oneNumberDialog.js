@@ -22,23 +22,35 @@ export function createDialog(oper, vars, varA, inputSymbol) {
         console.log("changed");
     });
 
-    $number.on("keypress", function () {
+    $number.on("keypress", function ($e) {
+        $e.stopImmediatePropagation();
+
         if ( $(this).data("timeoutHandle") ) {
             clearTimeout($(this).data("timeoutHandle"));
         }
         $number.data("timeoutHandle", setTimeout(() => { $(this).change(); }, 250));
     });
+
+    const $form = $("#dialog-one-number").find("form");
+
+    const deferred = $.Deferred();    
+    $form.on("submit", function (e) {
+        e.preventDefault();
+
+        vars["a"] = $number.val();
+        $dialog.dialog( "close" );
+
+        deferred.resolve(true);
+    });
     
     
-    const deferred = $.Deferred();
     const $dialog = $( "#dialog-one-number" ).dialog({
         modal: true,
         buttons: {
             OK: function() {
-                if ( $number ) {
-                    deferred.resolve(true);
-                    vars["a"] = $number.val();
-                    $dialog.dialog( "close" );
+                if ( $number.val() !== "" ) {
+
+                    $form.submit();
                 }
             },
             Cancel: function() {
@@ -50,6 +62,7 @@ export function createDialog(oper, vars, varA, inputSymbol) {
             $number.removeClass( "ui-state-error" );
         }
     });
+    
     return deferred.promise();
 }
 

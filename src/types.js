@@ -43,7 +43,7 @@ export function variable(val) {
         throw new Error("Error: uknown value " + val);
     }
     
-    return val;
+    return "$" + val;
 }
 
 export function auto(val) {

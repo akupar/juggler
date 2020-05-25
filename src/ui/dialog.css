@@ -6,3 +6,8 @@
 .ui-button-icon-only {
     overflow: hidden;
 }
+
+.input-preview {
+    display: block;
+    text-align: center;
+}

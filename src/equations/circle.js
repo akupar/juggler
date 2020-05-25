@@ -10,16 +10,16 @@ import store from "./store";
 store.addEquation({
     oper: "->",
     0: {
-        oper: "o",
-        0: "x"
+        oper: variable("o"),
+        0: variable("x")
     },
-    1: function func(vars) {
+    1: function func({ o, x }) {
         return {
             oper: {
                 item: "(func)",
-                0: "?(" + vars["o"] + ")"
+                0: variable(o)
             },
-            0: vars["x"]
+            0: x
         };
     }
 },
@@ -33,14 +33,14 @@ store.addEquation({
     0: {
         oper: {
             item: "(func)",
-            0: "g"
+            0: variable("g")
         },
         0: {
             oper: {
                 item: "(func)",
-                0: "f"
+                0: variable("f")
             },
-            0: "x"
+            0: variable("x")
         }
     },
     1: {
@@ -48,14 +48,14 @@ store.addEquation({
             oper: "∘",
             0: {
                 item: "(func)",
-                0: "g"
+                0: variable("g")
             },
             1: {
                 item: "(func)",
-                0: "f"
+                0: variable("f")
             }
         },
-        0: "x"
+        0: variable("x")
     }
 });
 
@@ -65,21 +65,21 @@ store.addEquation({
     0: {
         oper: {
             item: "(func)",
-            0: "h"
+            0: variable("h")
         },
         0: {
             oper: {
                 oper: "∘",
                 0: {
                     item: "(func)",
-                    0: "g"
+                    0: variable("g")
                 },
                 1: {
                     item: "(func)",
-                    0: "f"
+                    0: variable("f")
                 }
             },
-            0: "x"
+            0: variable("x")
         }
     },
     1: {
@@ -87,21 +87,21 @@ store.addEquation({
             oper: "∘",
             0: {
                 item: "(func)",
-                0: "h"
+                0: variable("h")
             },
             1: {
                 oper: "∘",
                 0: {
                     item: "(func)",
-                    0: "g"
+                    0: variable("g")
                 },
                 1: {
                     item: "(func)",
-                    0: "f"
+                    0: variable("f")
                 }
             }
         },
-        0: "x"
+        0: variable("x")
     }
 });
 
@@ -114,16 +114,16 @@ store.addEquation({
             oper: "∘",
             0: {
                 item: "(func)",
-                0: "f"
+                0: variable("f")
             },
             1: {
                 item: "(func)",
-                0: "g"
+                0: variable("g")
             }
         },
         1: {
             item: "(func)",
-            0: "h"
+            0: variable("h")
         }
 
     },
@@ -131,17 +131,17 @@ store.addEquation({
         oper: "∘",
         0: {
             item: "(func)",
-            0: "f"
+            0: variable("f")
         },
         1: {
             oper: "∘",
             0: {
                 item: "(func)",
-                0: "g"
+                0: variable("g")
             },
             1: {
                 item: "(func)",
-                0: "h"
+                0: variable("h")
             }
         }
     }
@@ -153,13 +153,13 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "(function power)",
-        0: "f",
+        0: variable("f"),
         1: auto(2)
     },
     1: {
         oper: "∘",
-        0: "f",
-        1: "f" 
+        0: variable("f"),
+        1: variable("f") 
     }
 },
 "Muuta pallo-operaatioksi",
@@ -173,17 +173,17 @@ store.addEquation({
         oper: "∘",
         0: {
             oper: "(function power)",
-            0: "f",
-            1: "x"
+            0: variable("f"),
+            1: variable("x")
         },
-        1: "f"
+        1: variable("f")
     },
     1: {
         oper: "(function power)",
-        0: "f",
+        0: variable("f"),
         1: {
             oper: "+",
-            0: "x",
+            0: variable("x"),
             1: auto(1)
         }
     }

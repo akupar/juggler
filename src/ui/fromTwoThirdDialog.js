@@ -31,7 +31,9 @@ function createDialog(oper, vars, varA, varB, varC, number1Control, number2Contr
         }
     });
 
-    $number1.on("keypress", function () {
+    $number1.on("keypress", function ($e) {
+        $e.stopImmediatePropagation();
+
         if ( $(this).data("timeoutHandle") ) {
             clearTimeout($(this).data("timeoutHandle"));
         }
@@ -42,37 +44,62 @@ function createDialog(oper, vars, varA, varB, varC, number1Control, number2Contr
         $number1.val(number1Control($result.val(), $(this).val()));
     });
 
-    $number2.on("keypress", function () {
+    $number2.on("keypress", function ($e) {
+        $e.stopImmediatePropagation();
+
         if ( $(this).data("timeoutHandle") ) {
             clearTimeout($(this).data("timeoutHandle"));
         }
         $number1.data("timeoutHandle", setTimeout(() => { $(this).change(); }, 250));
     });
+
+    const $form = $dialog.find("form");
+
+    const deferred = $.Deferred();    
+    $form.on("submit", function (e) {
+        console.log("submit");
+        e.preventDefault();
+
+        vars["a"] = $number1.val();
+        vars["b"] = $number2.val();
+        $dialog.dialog( "close" );
+
+        deferred.resolve(true);
+    });
     
-    
-    const deferred = $.Deferred();
+    $number1.on("keypress", function(event) { 
+        if (event.keyCode === $.ui.keyCode.ENTER) { 
+            $form.submit();
+            return false;
+        }
+    });
+    $number2.on("keypress", function(event) { 
+        if (event.keyCode === $.ui.keyCode.ENTER) { 
+            $form.submit();
+            return false;
+        }
+    });
     $dialog.dialog({
-        //autoOpen: false,
         modal: true,
-        //position: { my: 'center', at: 'center', of: $("#canvas")},
         buttons: {
             OK: function() {
+                console.log("OK");                
                 if ( $number1.is(":valid") && $number2.is(":valid") ) {
-                    deferred.resolve(true);
-                    vars["a"] = $number1.val();
-                    vars["b"] = $number2.val();
-
-                    $dialog.dialog( "close" );
+                    console.log("gonna submit");
+                    $form.submit();        
                 }
             },
             Cancel: function() {
-                deferred.resolve(false);
+                console.log("Cancel");                
                 $dialog.dialog( "close" );
+                deferred.resolve(false);
             }
         },
         close: function() {
+            console.log("close");
             $number1.removeClass( "ui-state-error" );
             $number2.removeClass( "ui-state-error" );
+            deferred.resolve(false);            
         }
     });
 

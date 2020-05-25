@@ -1,5 +1,5 @@
 import store from "./store";
-//import { symbol } from "../types";
+import { variable } from "../types";
 
 /* store.addEquation({
  *     oper: "->",
@@ -17,7 +17,7 @@ import store from "./store";
 
 
 store.addEquation2({
-    0: "a",
+    0: variable("a"),
     1: function exact({ a }) {
         console.log("sho exact:", JSON.stringify(a));
         const copy =  {
@@ -36,7 +36,7 @@ store.addEquation2({
 
 
 store.addEquation2({
-    0: "a",
+    0: variable("a"),
     1: function approx({ a }) {
         return {
             ...a,

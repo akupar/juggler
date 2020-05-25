@@ -1,21 +1,21 @@
 import store from "./store";
 import { setDisplayTextAndReturn } from "../util/functions";
-import { chomp, suppressRepeatingDigits } from "../util/number";
-import { auto, int } from "../types";
+import { chomp } from "../util/number";
+import { auto, int, variable } from "../types";
 
 // a/(a/b) = b
 store.addEquation({
     oper: "=",
     0: {
         oper: "/",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         }
     },
-    1: "b"
+    1: variable("b")
 });
 
 // (a/b)/c = a/(b*c)
@@ -25,18 +25,18 @@ store.addEquation({
         oper: "/",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: "/",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "×",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 });
@@ -46,21 +46,21 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "×",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "/",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     },
     1: {
         oper: "/",
         0: {
             oper: "×",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     }
 });
 
@@ -69,13 +69,13 @@ store.addEquation({
     oper: "=",
     0: {
         oper: ":",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "/",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     }
 }, "Vaihtoehtoinen muoto");
 
@@ -85,8 +85,8 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "/",
-        0: "a",
-        1: "a"
+        0: variable("a"),
+        1: variable("a")
     },
     1: auto(1)
 });
@@ -96,8 +96,8 @@ store.addEquation({
     oper: "=",
     0: {
         oper: ":",
-        0: "a",
-        1: "a"
+        0: variable("a"),
+        1: variable("a")
     },
     1: auto(1)
 });
@@ -142,23 +142,23 @@ store.addEquation({
         oper: "+",
         0: {
             oper: "/",
-            0: int("a"),
-            1: int("c")
+            0: variable("a"),
+            1: variable("c")
         },
         1: {
             oper: "/",
-            0: int("b"),
-            1: int("c")
+            0: variable("b"),
+            1: variable("c")
         }
     },
     1: {
         oper: "/",
         0: {
             oper: "+",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     }
 }, "Yhdistä samannimiset", "Erota samannimisiksi");
 
@@ -169,12 +169,12 @@ store.addEquation({
         oper: "/",
         0: {
             oper: "×",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "b"
+        1: variable("b")
     },
-    1: "a"
+    1: variable("a")
 });
 
 // b×a/b = a
@@ -184,12 +184,12 @@ store.addEquation({
         oper: "/",
         0: {
             oper: "×",
-            0: "b",
-            1: "a"
+            0: variable("b"),
+            1: variable("a")
         },
-        1: "b"
+        1: variable("b")
     },
-    1: "a"
+    1: variable("a")
 });
 
 // a / b = (a / b)[sup](c
@@ -197,17 +197,17 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "/",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "(supistaminen)",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     }
 }, "Supista c:llä", "Poista supistus");
 
@@ -218,22 +218,22 @@ store.addEquation({
         oper: "(supistaminen)",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: "/",
         0: {
             oper: ":",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
         1: {
             oper: ":",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 },
@@ -246,17 +246,17 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "/",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "(laventaminen)",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     }
 },
 "Lavenna c:llä",
@@ -271,22 +271,22 @@ store.addEquation({
         oper: "(laventaminen)",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: "/",
         0: {
             oper: "×",
-            0: "c",
-            1: "a"
+            0: variable("c"),
+            1: variable("a")
         },
         1: {
             oper: "×",
-            0: "c",
-            1: "b"
+            0: variable("c"),
+            1: variable("b")
         }
     }
 },
@@ -299,10 +299,10 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "/",
-        0: "a",
+        0: variable("a"),
         1: auto(1)
     },
-    1: "a",
+    1: variable("a"),
 },
 "Poista identiteetillä jakaminen",
 "Jaa identiteetillä"
@@ -313,20 +313,20 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "/",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "/",
         0: {
             oper: "×",
-            0: "c",
-            1: "a"
+            0: variable("c"),
+            1: variable("a")
         },
         1: {
             oper: "×",
-            0: "c",
-            1: "b"
+            0: variable("c"),
+            1: variable("b")
         }
     },
 },
@@ -343,26 +343,26 @@ store.addEquation({
         oper: "×",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: {
             oper: "/",
-            0: "c",
-            1: "d"
+            0: variable("c"),
+            1: variable("d")
         }
     },
     1: {
         oper: "/",
         0: {
             oper: "×",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
         1: {
             oper: "×",
-            0: "b",
-            1: "d"
+            0: variable("b"),
+            1: variable("d")
         }
     },
 },
@@ -377,26 +377,26 @@ store.addEquation({
         oper: "/",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: {
             oper: "/",
-            0: "c",
-            1: "d"
+            0: variable("c"),
+            1: variable("d")
         }
     },
     1: {
         oper: "×",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: {
             oper: "/",
-            0: "d",
-            1: "c"
+            0: variable("d"),
+            1: variable("c")
         }
     },
 },
@@ -411,26 +411,26 @@ store.addEquation({
         oper: ":",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: {
             oper: "/",
-            0: "c",
-            1: "d"
+            0: variable("c"),
+            1: variable("d")
         }
     },
     1: {
         oper: "×",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: {
             oper: "/",
-            0: "d",
-            1: "c"
+            0: variable("d"),
+            1: variable("c")
         }
     },
 },
@@ -438,115 +438,81 @@ store.addEquation({
 "Takaperin: kerro ristiin"
 );
 
-// a / b = c
-store.addEquation({
-    oper: "->",
-    0: {
-        oper: "/",
-        0: int("a"),
-        1: int("b")
-    },
-    1: setDisplayTextAndReturn("c or approx(c)", function c(vars) {
-
-        const r = vars["a"] / vars["b"];
-        console.log("R:", r, r * vars["b"], vars["a"]);
-        if ( chomp(r) * vars["b"] === vars["a"] ) {
-            return {
-                item: "(val)",
-                0: r
-            };
-        }
-        
-        return {
-            oper: "(summary)",
-            _approx: r,
-            display: suppressRepeatingDigits(r.toString()),
-            0: {
-                oper: "/",
-                0: {
-                    item: "(val)",
-                    0: vars["a"]
-                },
-                1: {
-                    item: "(val)",
-                    0: vars["b"]
-                }
-            }
-        };
-    })
-}, "Evaluoi jakolasku a / b");
-
-// a : b = c
-store.addEquation({
-    oper: "->",
-    0: {
-        oper: ":",
-        0: int("a"),
-        1: int("b")
-    },
-    1: function c(vars) {
-        const r = vars["a"] / vars["b"];
-        console.log("R:", r, r * vars["b"], vars["a"]);
-        if ( r * vars["b"] === vars["a"] && r.toString().length < 17 ) {
-            return {
-                item: "(val)",
-                0: r
-            };
-        }
-        
-        return {
-            oper: "(summary)",
-            _approx: r,
-            display: suppressRepeatingDigits(r.toString()),
-            0: {
-                oper: ":",
-                0: int(vars["a"]),
-                1: int(vars["b"])
-            }
-        };
-    }
-}, "Evaluoi jakolasku a : b");
-
-
-
-
-// a / summary(b) = summary(a / b)
-/* store.addEquation({
- *     oper: "->",
- *     0: {
- *         oper: "/",
- *         0: int("a"),
- *         1: {
- *             oper: "(summary)",
- *             _approx: "approx",
- *             display: "approx",
- *             0: "b"
- *         }
- *     },
- *     1: function c (vars) {
- *         return {
- *             oper: "(summary)",
- *             0: {
- *                 oper: "/",
- *                 0: int(vars["a"]),
- *                 1: vars["b"]
- *             },
- *             _approx: (vars["a"] / vars["approx"]),
- *             display: (vars["a"] / vars["approx"]) + "..."
- *         };
- *     }
- * },
- * "Jaa luku ja yhteenvetoluvulla"
- * );
- *  */
-
-
+// a / b = c | c.approx
 store.addEquation2({
     0: {
         oper: "/",
         0: int("a"),
-        1: "b",
-        "?_approx": "approx"
+        1: int("b"),
+        "?_approx": variable("approx")
+    },
+    1: setDisplayTextAndReturn("c or approx(c)", function c({ a, b }) {
+        const r = a / b;
+        console.log("R:", r, r * b, a);
+        if ( chomp(r) * b === a ) {
+            return {
+                item: "(val)",
+                0: r
+            };
+        }
+
+        return {
+            oper: "/",
+            0: int(a),
+            1: int(b),
+            _approx: a / b,
+            display: ":approx"
+        };
+    }),
+    where: ({ approx }) => {
+        return !approx;
+    },
+    desc: "Calculate approximate value"
+});
+
+// a : b = c | c.approx
+store.addEquation2({
+    0: {
+        oper: ":",
+        0: int("a"),
+        1: int("b"),
+        "?_approx": variable("approx")
+    },
+    1: setDisplayTextAndReturn("c | ~c", function c({ a, b }) {
+        const r = a / b;
+        console.log("R:", r, r * b, a);
+        if ( chomp(r) * b === a ) {
+            return {
+                item: "(val)",
+                0: r
+            };
+        }
+
+        return {
+            oper: ":",
+            0: int(a),
+            1: int(b),
+            _approx: r,
+            display: ":approx"
+        };
+    }),
+    where: ({ approx }) => {
+        return !approx;
+    },
+    desc: "Calculate approximate value"
+});
+
+
+
+
+
+// a / ~b = ~c
+store.addEquation2({
+    0: {
+        oper: "/",
+        0: int("a"),
+        1: variable("b"),
+        "?_approx": variable("approx")
     },
     1: function c({ a, b }) {
         return {

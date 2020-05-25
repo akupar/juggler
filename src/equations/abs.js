@@ -5,12 +5,9 @@ store.addEquation({
     oper: "->",
     0: {
         oper: "(abs)",
-        0: {
-            item: "(val)",
-            0: "a"
-        }
+        0: int(variable("a"))
     },
-    1: "a"
+    1: int(variable("a"))
 },
 "Evaluate absolute value"
 );
@@ -22,16 +19,10 @@ store.addEquation({
         oper: "(abs)",
         0: {
             oper: "-",
-            0: {
-                item: "(val)",
-                0: "a"
-            }
+            0: int(variable("a"))
         }
     },
-    1: {
-        item: "(val)",
-        0: "a"
-    }
+    1: int(variable("a"))
 },
 "Evaluate absolute value"
 );

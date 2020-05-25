@@ -1,18 +1,18 @@
 import store from "./store";
-import { auto } from "../types";
+import { auto, int, variable } from "../types";
 
 // a^2 = a×a
 store.addEquation({
     oper: "=",
     0: {
         oper: "^",
-        0: "a",
+        0: variable("a"),
         1: auto(2)
     },
     1: {
         oper: "×",
-        0: "a",
-        1: "a" 
+        0: variable("a"),
+        1: variable("a") 
     }
 },
 "Muuta kertolaskuksi",
@@ -24,7 +24,7 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "^",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "-",
             0: auto(1)
@@ -33,7 +33,7 @@ store.addEquation({
     1: {
         oper: "/",
         0: auto(1),
-        1: "a" 
+        1: variable("a") 
     }
 }, "Muuta kertolaskuksi", "Muuta toiseksi potenssiksi");
 
@@ -44,22 +44,22 @@ store.addEquation({
         oper: "/",
         0: {
             oper: "^",
-            0: "a",
-            1: "x"
+            0: variable("a"),
+            1: variable("x")
         },
         1: {
             oper: "^",
-            0: "a",
-            1: "y"
+            0: variable("a"),
+            1: variable("y")
         }
     },
     1: {
         oper: "^",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "-",
-            0: "x",
-            1: "y"
+            0: variable("x"),
+            1: variable("y")
         }
     }
 },
@@ -72,22 +72,14 @@ store.addEquation({
     oper: "->",
     0: {
         oper: "^",
-        0: {
-            item: "(val)",
-            0: "a"
-        },
-        1: {
-            item: "(val)",
-            0: "b"
-        }
+        0: int(variable("a")),
+        1: int(variable("b"))
     },
-    1: function c (vars) {
-        return {
-            item: "(val)",
-            0: Math.pow(vars["a"], vars["b"])
-        };
+    1: function c ({ a, b }) {
+        return int(Math.pow(a, b));
     }
 }, "Evaluoi potenssilasku");
+
 
 // (-a)^b -> val(a) ^ val(b)
 store.addEquation({
@@ -96,35 +88,20 @@ store.addEquation({
         oper: "^",
         0: {
             oper: "-",
-            0: {
-                item: "(val)",
-                0: "a"
-            }
+            0: int(variable("a"))
         },
-        1: {
-            item: "(val)",
-            0: "b"
-        }
+        1: int(variable("b"))
     },
-    1: function c (vars) {
-        const r = Math.pow(vars["a"], vars["b"]);
+    1: function c ({ a, b }) {
+        const r = Math.pow(a, b);
 
         if ( r < 0 ) {
             return {
-                item: "(val)",
-                0: {
                     oper: "-",
-                    0: {
-                        item: "(val)",
-                        0: -r
-                    }
-                }
+                    0: int(-r)
             };
         } else {
-            return {
-                item: "(val)",
-                0: r
-            };
+            return int(r);
         }
     }
 }, "Evaluoi potenssilasku");
@@ -133,20 +110,11 @@ store.addEquation({
 // val(c) -> val(a) ^ val(b)
 store.addEquation({
     oper: "->",
-    0: {
-        item: "(val)",
-        0: "c"
-    },
+    0: int(variable("c")),
     1: {
         oper: "^",
-        0: {
-            item: "(val)",
-            0: "a"
-        },
-        1: {
-            item: "(val)",
-            0: "b"
-        }
+        0: int(variable("a")),
+        1: int(variable("b"))
     }
 }, "Muuta a:n ja b:n potenssilaskuksi");
 

@@ -5,6 +5,10 @@ import userSymbols from "./ui/userSymbols";
 import undoManager from "./ui/undoManager";
 import canvas from "./ui/canvas";
 import debug from "./ui/debug";
+import inputExpressionDialog from "./ui/inputExpressionDialog";
+import shuntingyard from "./shuntingyard";
+
+window.shuntingyard = shuntingyard;
 
 import {
     getParentBlock,
@@ -71,6 +75,7 @@ $(document).on("keypress", function ($event) {
     switch ( $event.originalEvent.key ) {
         case "u":
         case "^":
+            console.log("U");
             selectParentBlock();
             break;
         case "n":
@@ -89,8 +94,16 @@ $(document).on("keypress", function ($event) {
 });
 
 
-
 $(document).ready(function () {
+    $(".new-button").on("click", async function () {
+
+        const input = await inputExpressionDialog.createDialog();
+        console.log("INPUT:", input);
+        canvas.setEquation(input);
+
+    });
+
+
     debug.showBucketData(window.equations.buckets);
     userSymbols.showUserSymbols();
 

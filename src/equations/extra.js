@@ -8,13 +8,13 @@ store.addEquation({
         oper: "×",
         0: {
             oper: "+",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: {
             oper: "+",
-            0: "c",
-            1: "d"
+            0: variable("c"),
+            1: variable("d")
         }
     },
     1: {
@@ -23,26 +23,26 @@ store.addEquation({
             oper: "+",
             0: {
                 oper: "×",
-                0: "a",
-                1: "c"
+                0: variable("a"),
+                1: variable("c")
             },
             1: {
                 oper: "×",
-                0: "a",
-                1: "d"
+                0: variable("a"),
+                1: variable("d")
             }
         },
         1: {
             oper: "+",
             0: {
                 oper: "×",
-                0: "b",
-                1: "c"
+                0: variable("b"),
+                1: variable("c")
             },
             1: {
                 oper: "×",
-                0: "b",
-                1: "d"
+                0: variable("b"),
+                1: variable("d")
             }
         }
     }
@@ -56,25 +56,25 @@ store.addEquation({
         oper: "×",
         0: {
             oper: "-",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: {
             oper: "+",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         }
     },
     1: {
         oper: "-",
         0: {
             oper: "^",
-            0: "a",
+            0: variable("a"),
             1: auto(2)
         },
         1: {
             oper: "^",
-            0: "b",
+            0: variable("b"),
             1: auto(2)
         }
     }
@@ -87,8 +87,8 @@ store.addEquation({
         oper: "^",
         0: {
             oper: "+",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: auto(2)
     },
@@ -98,7 +98,7 @@ store.addEquation({
             oper: "+",
             0: {
                 oper: "^",
-                0: "a",
+                0: variable("a"),
                 1: auto(2)
             },
             1: {
@@ -106,14 +106,14 @@ store.addEquation({
                 0: {
                     oper: "×",
                     0: auto(2),
-                    1: "a"
+                    1: variable("a")
                 },
-                1: "b"
+                1: variable("b")
             }
         },
         1: {
             oper: "^",
-            0: "b",
+            0: variable("b"),
             1: auto(2)
         }
     }
@@ -127,8 +127,8 @@ store.addEquation({
         oper: "^",
         0: {
             oper: "-",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: auto(2)
     },
@@ -138,7 +138,7 @@ store.addEquation({
             oper: "-",
             0: {
                 oper: "^",
-                0: "a",
+                0: variable("a"),
                 1: auto(2)
             },
             1: {
@@ -146,14 +146,14 @@ store.addEquation({
                 0: {
                     oper: "×",
                     0: auto(2),
-                    1: "a"
+                    1: variable("a")
                 },
-                1: "b"
+                1: variable("b")
             }
         },
         1: {
             oper: "^",
-            0: "b",
+            0: variable("b"),
             1: auto(2)
         }
     }

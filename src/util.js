@@ -69,9 +69,13 @@ export function getKeys(item) {
 }
 
 export function isVariable(elem) {
-    if ( elem && elem.match && elem.match(/^[a-zA-Zθ]/u)  && elem !== "i" /* TODO */ ) {
+    if ( elem && elem[0] === "$" ) {
         return true;
     }
+    
+    //if ( elem && elem.match && elem.match(/^[a-zA-Zθ]/u)  && elem !== "i" /* TODO */ ) {
+    //return true;
+    //}
     
     return false;
 }

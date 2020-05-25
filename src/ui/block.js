@@ -286,6 +286,8 @@ export function showSuggestions() {
     }
 
     generalStore.allMatches(expr).forEach(function ({ equation, vars, score, description }) {
+
+        
         suggestions.add({ equation, vars, score, description });
     });
 }

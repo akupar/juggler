@@ -1,24 +1,24 @@
 import store from "./store";
 import { setDisplayTextAndReturn } from "../util/functions";
-import { chomp, suppressRepeatingDigits } from "../util/number";
-import { auto } from "../types";
+import { chomp } from "../util/number";
+import { auto, int, variable } from "../types";
 
 // a^(1/b) = r[b](a)
 store.addEquation({
     oper: "=",
     0: {
         oper: "^",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "/",
             0: auto(1),
-            1: "b"
+            1: variable("b")
         }
     },
     1: {
         oper: "(root)",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     }
 },
 "Muuta juureksi",
@@ -33,21 +33,18 @@ store.addEquation({
         oper: "^",
         0: {
             oper: "(root)",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: ";",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "≥",
-            0: "a",
-            1: {
-                item: "(val)",
-                0: 0
-            }
+            0: variable("a"),
+            1: auto(0)
         }
     }
 },
@@ -56,41 +53,46 @@ store.addEquation({
 
 
 
-// a [root] 2 = c
-store.addEquation({
-    oper: "->",
+// a [root] b = c | c.approx
+store.addEquation2({
     0: {
         oper: "(root)",
-        0: {
-            item: "(val)",
-            0: "a"
-        },
-        1: auto(2)
+        0: int(variable("a")),
+        1: int(variable("b")),
+        "?_approx": variable("approx")
     },
-    1: setDisplayTextAndReturn("c or approx(c)", function c(vars) {
-        
-        const r = Math.sqrt(vars["a"]);
-
-        if ( Math.pow(chomp(r), 2) === vars["a"] ) {
-            return {
-                item: "(val)",
-                0: r
-            };
+    1: setDisplayTextAndReturn("c | ~c", function c({ $a, $b }) {
+        let rootfunc;
+        if ( $b === 2 ) {
+            rootfunc = x => Math.sqrt(x);
+        } else if ( $b === 3 ) {
+            rootfunc = x => Math.cbrt(x);
+        } else {
+            rootfunc = x => Math.pow(x, 1/$b);
         }
         
-        return {
-            oper: "(summary)",
-            approx: r,
-            display: suppressRepeatingDigits(r.toString()),
-            0: {
-                oper: "(root)",
-                0: {
+        const r = rootfunc($a);
+        
+        if ( Math.pow(chomp(r), $b) === $a ) {
+                return {
                     item: "(val)",
-                    0: vars["a"]
-                },
-                1: auto(2)
-            }
+                    0: r
+            };
+        }
+
+        return {
+            oper: "(root)",
+            0: int($a),
+            1: int($b),
+            _approx: r,
+            display: ":approx"
         };
-    })
-}, "Evaluoi neliöjuuri sqrt(a)");
+    }),
+    where: ({ $approx }) => {
+        return !$approx;
+    },
+    desc: "Calculate approximate value of root"
+});
+
+
 

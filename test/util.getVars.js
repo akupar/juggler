@@ -5,9 +5,9 @@ describe('util.getVariables', function() {
     it('simple expression', function() {
         assert.deepEqual(
             util.getVariables(
-                "a"
+                "$a"
             ),
-            [ "a" ]
+            [ "$a" ]
         );
     });
 
@@ -16,11 +16,11 @@ describe('util.getVariables', function() {
             util.getVariables(
                 {
                     oper: '+',
-                    0: "a",
+                    0: "$a",
                     1: 1
                 }
             ),
-            [ "a" ]
+            [ "$a" ]
         );
     });
 

@@ -1,37 +1,37 @@
 
 const assert = require('assert');
 const util   = require('../src/util');
-const eq     = require('../src/eq');
+const { auto, variable } = require("../src/types");
 
 describe('util.transform', function() {
     describe('simple variable', function() {
         it('should transform integers', function() {
             assert.deepEqual(
                 util.transform(
-                    { oper: "=", 0: "a", 1: { oper: "+", 0: "a", 1: "0" } },
+                    { oper: "=", 0: variable("a"), 1: { oper: "+", 0: variable("a"), 1: auto(0) } },
                     1
                 ),
-                { oper: "+", 0: "1", 1: "0" }
+                { oper: "+", 0: "1", 1: auto(0) }
             );
         });
 
         it('should transform symbols', function() {
             assert.deepEqual(
                 util.transform(
-                    { oper: "=", 0: "a", 1: { oper: "+", 0: "a", 1: "0" } },
-                    "b"
+                    { oper: "=", 0: variable("a"), 1: { oper: "+", 0: variable("a"), 1: auto(0) } },
+                    variable("b")
                 ),
-                { oper: "+", 0: "b", 1: "0" }
+                { oper: "+", 0: variable("b"), 1: auto(0) }
             );
         });
 
         it('should transform symbols even if same symbol on both equations', function() {
             assert.deepEqual(
                 util.transform(
-                    { oper: "=", 0: "a", 1: { oper: "+", 0: "a", 1: "0" } },
-                    "a"
+                    { oper: "=", 0: variable("a"), 1: { oper: "+", 0: variable("a"), 1: auto(0) } },
+                    variable("a")
                 ),
-                { oper: "+", 0: "a", 1: "0" }
+                { oper: "+", 0: variable("a"), 1: auto(0) }
             );
         });
         
@@ -39,12 +39,12 @@ describe('util.transform', function() {
             assert.deepEqual(
                 util.transform(
                     { oper: "=",
-                      0: { oper: "+", 0: "a", 1: "a" },
-                      1: { oper: "×", 0: 2,   1: "a" }
+                      0: { oper: "+", 0: variable("a"), 1: variable("a") },
+                      1: { oper: "×", 0: auto(2),   1: variable("a") }
                     },
-                    { oper: "+", 0: 5, 1: 5 }
+                    { oper: "+", 0: auto(5), 1: auto(5) }
                 ),
-                { oper: "×", 0: 2, 1: 5 }
+                { oper: "×", 0: auto(2), 1: auto(5) }
             );
         });
 
@@ -52,12 +52,12 @@ describe('util.transform', function() {
             assert.deepEqual(
                 util.transform(
                     { oper: "=",
-                      0: { oper: "+", 0: "a", 1: "a" },
-                      1: { oper: "×", 0: 2,   1: "a" }
+                      0: { oper: "+", 0: variable("a"), 1: variable("a") },
+                      1: { oper: "×", 0: auto(2),   1: variable("a") }
                     },
-                    { oper: "+", 0: { oper: "(val)", 0: 5 }, 1: { oper: "(val)", 0: 5 } }
+                    { oper: "+", 0: auto(5), 1: auto(5) }
                 ),
-                { oper: "×", 0: 2, 1: { oper: "(val)", 0: 5 } }
+                { oper: "×", 0: auto(2), 1: auto(5) }
             );
         });
 
@@ -65,12 +65,12 @@ describe('util.transform', function() {
             assert.deepEqual(
                 util.transform(
                     { oper: "=",
-                      0: "a",
-                      1: { oper: "+", 0: "a",   1: 0 }
+                      0: variable("a"),
+                      1: { oper: "+", 0: variable("a"),   1: auto(0) }
                     },
-                    0
+                    auto(0)
                 ),
-                { oper: "+", 0: 0,   1: 0 }
+                { oper: "+", 0: auto(0),   1: auto(0) }
             );
         });
 
@@ -86,27 +86,27 @@ describe('util.transform', function() {
                         oper: "=",
                         0: {
                             oper: "/",
-                            0: "a",
-                            1: "b",
-                            "?_approx": "approx"
+                            0: variable("a"),
+                            1: variable("b"),
+                            "?_approx": variable("approx")
                         },
                         1: {
                             oper: "/",
-                            0: "b",
-                            1: "a",
-                            "?_approx": "approx"
+                            0: variable("b"),
+                            1: variable("a"),
+                            "?_approx": variable("approx")
                         }
                     },
                     {
                         oper: "/",
-                        0: 9,
-                        1: 8
+                        0: auto(9),
+                        1: auto(8)
                     }
                 ),
                 {
                     oper: "/",
-                    0: 8,
-                    1: 9
+                    0: auto(8),
+                    1: auto(9)
                 }
             );
         });
@@ -118,28 +118,28 @@ describe('util.transform', function() {
                         oper: "=",
                         0: {
                             oper: "/",
-                            0: "a",
-                            1: "b",
+                            0: variable("a"),
+                            1: variable("b"),
                             "?_approx": "approx"
                         },
                         1: {
                             oper: "/",
-                            0: "b",
-                            1: "a",
+                            0: variable("b"),
+                            1: variable("a"),
                             "?_approx": "approx"
                         }
                     },
                     {
                         oper: "/",
-                        0: 9,
-                        1: 8,
+                        0: auto(9),
+                        1: auto(8),
                         _approx: 1.125
                     }
                 ),
                 {
                     oper: "/",
-                    0: 8,
-                    1: 9,
+                    0: auto(8),
+                    1: auto(9),
                     _approx: 1.125
                 }
             );
@@ -154,24 +154,24 @@ describe('util.transform', function() {
                         oper: "=",
                         0: {
                             oper: "/",
-                            0: "a",
-                            1: "b",
+                            0: variable("a"),
+                            1: variable("b"),
                             _approx: "approx"                            
                         },
                         1: {
                             oper: "/",
-                            0: "b",
-                            1: "a",
+                            0: variable("b"),
+                            1: variable("a"),
                             _approx: "approx"                            
                         }
                     },
                     {
                         oper: "/",
-                        0: 9,
-                        1: 8
+                        0: auto(9),
+                        1: auto(8)
                     }
                 ),
-                "Not matching"
+                          "Not matching"
             );
         });
         
@@ -182,28 +182,28 @@ describe('util.transform', function() {
                         oper: "=",
                         0: {
                             oper: "/",
-                            0: "a",
-                            1: "b",
+                            0: variable("a"),
+                            1: variable("b"),
                             _approx: "approx"
                         },
                         1: {
                             oper: "/",
-                            0: "b",
-                            1: "a",
+                            0: variable("b"),
+                            1: variable("a"),
                             _approx: "approx"                            
                         }
                     },
                     {
                         oper: "/",
-                        0: 9,
-                        1: 8,
+                        0: auto(9),
+                        1: auto(8),
                         _approx: 1.125
                     }
                 ),
                 {
                     oper: "/",
-                    0: 8,
-                    1: 9,
+                    0: auto(8),
+                    1: auto(9),
                     _approx: 1.125                        
                 }
             );
@@ -216,26 +216,26 @@ describe('util.transform', function() {
                         oper: "=",
                         0: {
                             oper: "/",
-                            0: "a",
-                            1: "b",
+                            0: variable("a"),
+                            1: variable("b"),
                         },
                         1: {
                             oper: "/",
-                            0: "b",
-                            1: "a",
+                            0: variable("b"),
+                            1: variable("a"),
                         }
                     },
                     {
                         oper: "/",
-                        0: 9,
-                        1: 8,
+                        0: auto(9),
+                        1: auto(8),
                         _approx: 1.125
                     }
                 ),
                 {
                     oper: "/",
-                    0: 8,
-                    1: 9,
+                    0: auto(8),
+                    1: auto(9),
                     _approx: 1.125
                 }
             );
@@ -245,12 +245,33 @@ describe('util.transform', function() {
     describe('dumdi', function() {
         it('should move _approx', function() {
             assert.deepEqual(
-                util.transform2(
-                    "a",
-                    { oper: "+", 0: "a" },
-                    99
+                util.transform(
+                    {
+                        oper: "=",
+                        0: {
+                            oper: "/",
+                            0: variable("a"),
+                            1: variable("b"),
+                        },
+                        1: {
+                            oper: "/",
+                            0: variable("b"),
+                            1: variable("a"),
+                        }
+                    },
+                    {
+                        oper: "/",
+                        0: auto(9),
+                        1: auto(8),
+                        _approx: 1.125
+                    }
                 ),
-                { oper: "+", 0: 99 }
+                {
+                    oper: "/",
+                    0: auto(8),
+                    1: auto(9),
+                    _approx: 1.125
+                }
             );
         });
 

@@ -1,12 +1,12 @@
 import store from "./store";
-import { auto, int } from "../types";
+import { auto, int, variable } from "../types";
 
 // a × 0 = 0
 store.addEquation({
     oper: "->",
     0: {
         oper: "×",
-        0: "x",
+        0: variable("x"),
         1: auto(0)
     },
     1: auto(0)
@@ -16,9 +16,9 @@ store.addEquation({
 store.addEquation({
     oper: "->",
     0: {
-        oper: "×",
+        oper: variable("×"),
         0: auto(0),
-        1: "x"
+        1: variable("x")
     },
     1: auto(0)
 }, "Eliminate");
@@ -29,18 +29,18 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "×",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "-",
-            0: "b"
+            0: variable("b")
         }
     },
     1: {
         oper: "-",
         0: {
             oper: "×",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         }
     }
 });
@@ -52,16 +52,16 @@ store.addEquation({
         oper: "×",
         0: {
             oper: "-",
-            0: "1",
+            0: variable("a"),
         },
-        1: "b"
+        1: variable("b")
     },
     1: {
         oper: "-",
         0: {
             oper: "×",
-            0: "a",
-            1: "b",
+            0: variable("a"),
+            1: variable("b"),
         }
     }
 });
@@ -71,13 +71,13 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "×",
-        0: "a",
+        0: variable("a"),
         1: auto(2)
     },
     1: {
         oper: "+",
-        0: "a",
-        1: "a" 
+        0: variable("a"),
+        1: variable("a") 
     }
 },
                   "Muuta yhteenlaskuksi",
@@ -91,23 +91,23 @@ store.addEquation({
         oper: "+",
         0: {
             oper: "×",
-            0: "n",
-            1: "a"
+            0: variable("n"),
+            1: variable("a")
         },
         1: {
             oper: "×",
-            0: "m",
-            1: "a"
+            0: variable("m"),
+            1: variable("a")
         }
     },
     1: {
         oper: "×",
         0: {
             oper: "+",
-            0: "n",
-            1: "m" 
+            0: variable("n"),
+            1: variable("m") 
         },
-        1: "a"
+        1: variable("a")
     }
 },
                   "Muuta yhteenlaskuksi",
@@ -120,13 +120,13 @@ store.addEquation({
     oper: "->",
     0: {
         oper: "×",
-        0: "a",
-        1: "b" 
+        0: variable("a"),
+        1: variable("b") 
     },
     1: {
         oper: "×",
-        0: "b",
-        1: "a" 
+        0: variable("b"),
+        1: variable("a") 
     }
 }, "Vaihda paikkoja");
 
@@ -137,18 +137,18 @@ store.addEquation({
         oper: "×",
         0: {
             oper: "×",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c" 
+        1: variable("c") 
     },
     1: {
         oper: "×",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "×",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 }, "Liitäntälaki");
@@ -160,22 +160,22 @@ store.addEquation({
         oper: "+",
         0: {
             oper: "×",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: {
             oper: "×",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         } 
     },
     1: {
         oper: "×",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "+",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 },
@@ -190,23 +190,23 @@ store.addEquation({
         oper: "+",
         0: {
             oper: "×",
-            0: "b",
-            1: "a"
+            0: variable("b"),
+            1: variable("a")
         },
         1: {
             oper: "×",
-            0: "c",
-            1: "a"
+            0: variable("c"),
+            1: variable("a")
         } 
     },
     1: {
         oper: "×",
         0: {
             oper: "+",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         },
-        1: "a"
+        1: variable("a")
     }
 },
                   "Yhteinen tekijä ulos",
@@ -218,13 +218,13 @@ store.addEquation({
     oper: "=",
     0: {
         oper: "×",
-        0: "a",
+        0: variable("a"),
         1: {
             item: "(val)",
-            0: 1
+            0: auto(1)
         }
     },
-    1: "a"
+    1: variable("a")
 },
                   "Poista yhdellä kertominen",
                   "Kerro yhdellä"
@@ -236,8 +236,8 @@ store.addEquation({
     oper: "->",
     0: {
         oper: "×",
-        0: int("a"),
-        1: int("b")
+        0: int(variable("a")),
+        1: int(variable("b"))
     },
     1: function c (vars) {
         return {
@@ -250,53 +250,23 @@ store.addEquation({
 // val(c) -> val(a) × val(b)
 store.addEquation({
     oper: "->",
-    0: int("c"),
+    0: int(variable("c")),
     1: {
         oper: "×",
-        0: int("a"),
-        1: int("b")
+        0: int(variable("a")),
+        1: int(variable("b"))
     }
 }, "Muuta a:n ja b:n kertolaskuksi");
 
-
-
-// a × summary(b) = summary(a × b)
-store.addEquation({
-    oper: "->",
-    0: {
-        oper: "×",
-        0: int("a"),
-        1: {
-            oper: "(summary)",
-            approx: "approx",
-            display: "approximation",
-            0: "b"
-        }
-    },
-    1: function c (vars) {
-        return {
-            oper: "(summary)",
-            0: {
-                oper: "×",
-                0: int(vars["a"]),
-                1: vars["b"]
-            },
-            approx: (vars["a"] * vars["approx"]),
-            display: (vars["a"] * vars["approx"]) + "..."
-        };
-    }
-},
-                  "Multiply numbers"
-);
 
 
 
 store.addEquation2({
     0: {
         oper: "×",
-        0: int("a"),
-        1: "b",
-        "?_approx": "approx"
+        0: int(variable("a")),
+        1: variable("b"),
+        "?_approx": variable("approx")
     },
     1: function c({ a, b }) {
         return {

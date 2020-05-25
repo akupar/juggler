@@ -1,18 +1,18 @@
 import store from "./store";
-import { auto } from "../types";
+import { auto, int, variable } from "../types";
 
 // a = b <=> b = a
 store.addEquivalence({
     oper: "->",
     0: {
         oper: "=",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "=",
-        0: "b",
-        1: "a"
+        0: variable("b"),
+        1: variable("a")
     }
 },
 "Vaihda paikkoja"
@@ -23,20 +23,20 @@ store.addEquivalence({
     oper: "<=>",
     0: {
         oper: "=",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "=",
         0: {
             oper: "+",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
         1: {
             oper: "+",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 });
@@ -47,20 +47,20 @@ store.addEquivalence({
     oper: "<=>",
     0: {
         oper: "=",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "=",
         0: {
             oper: "-",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
         1: {
             oper: "-",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 });
@@ -70,15 +70,15 @@ store.addEquivalence({
     oper: "<=>",
     0: {
         oper: "=",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "=",
         0: {
             oper: "-",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: auto(0)
     }
@@ -89,20 +89,20 @@ store.addEquivalence({
     oper: "<=>",
     0: {
         oper: "=",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "=",
         0: {
             oper: "×",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
         1: {
             oper: "×",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 });
@@ -112,20 +112,20 @@ store.addEquivalence({
     oper: "<=>",
     0: {
         oper: "=",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "=",
         0: {
             oper: "/",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
         1: {
             oper: "/",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 });
@@ -135,15 +135,15 @@ store.addEquivalence({
     oper: "<=>",
     0: {
         oper: "=",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "=",
         0: {
             oper: "/",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
         1: auto(0)
     }
@@ -154,20 +154,20 @@ store.addEquivalence({
     oper: "<=>",
     0: {
         oper: "=",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "=",
         0: {
             oper: "^",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
         1: {
             oper: "^",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 });
@@ -177,20 +177,20 @@ store.addEquivalence({
     oper: "<=>",
     0: {
         oper: "=",
-        0: "a",
-        1: "b"
+        0: variable("a"),
+        1: variable("b")
     },
     1: {
         oper: "=",
         0: {
             oper: "(root)",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
         1: {
             oper: "(root)",
-            0: "b",
-            1: "c"
+            0: variable("b"),
+            1: variable("c")
         }
     }
 });
@@ -205,18 +205,18 @@ store.addEquivalence({
         oper: "=",
         0: {
             oper: "+",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: "=",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "-",
-            0: "c",
-            1: "b"
+            0: variable("c"),
+            1: variable("b")
         }
     }
 });
@@ -229,18 +229,18 @@ store.addEquivalence({
         oper: "=",
         0: {
             oper: "+",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: "=",
-        0: "b",
+        0: variable("b"),
         1: {
             oper: "-",
-            0: "c",
-            1: "a"
+            0: variable("c"),
+            1: variable("a")
         }
     }
 });
@@ -256,18 +256,18 @@ store.addEquivalence({
         oper: "=",
         0: {
             oper: "×",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: "=",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "/",
-            0: "c",
-            1: "b"
+            0: variable("c"),
+            1: variable("b")
         }
     }
 });
@@ -279,26 +279,20 @@ store.addEquivalence({
         oper: "=",
         0: {
             oper: "^",
-            0: "a",
-            1: {
-                item: "(val)",
-                0: 1
-            }
+            0: variable("a"),
+            1: int(1)
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: "=",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "^",
-            0: "c",
+            0: variable("c"),
             1: {
                 oper: "-",
-                0: {
-                    item: "(val)",
-                    0: 1
-                }
+                0: int(1)
             }
         }
     }
@@ -311,20 +305,20 @@ store.addEquivalence({
         oper: "=",
         0: {
             oper: "^",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: "=",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "±",
             0: {
                 oper: "(root)",
-                0: "c",
-                1: "b"
+                0: variable("c"),
+                1: variable("b")
             }
         }
     }
@@ -337,10 +331,10 @@ store.addEquivalence({
         oper: "=",
         0: {
             oper: "(root)",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: "=",
@@ -348,15 +342,15 @@ store.addEquivalence({
             oper: "^",
             0: {
                 oper: "(root)",
-                0: "a",
-                1: "b"
+                0: variable("a"),
+                1: variable("b")
             },
-            1: "b"
+            1: variable("b")
         },
         1: {
             oper: "^",
-            0: "c",
-            1: "b"
+            0: variable("c"),
+            1: variable("b")
         }
     }
 },
@@ -369,28 +363,28 @@ store.addEquivalence({
     oper: "<=>",
     0: {
         oper: "=",
-        0: "a",
+        0: variable("a"),
         1: {
             oper: "±",
-            0: "b"
+            0: variable("b")
         }
     },
     1: {
         oper: ";",
         0: {
             oper: "=",
-            0: "a",
+            0: variable("a"),
             1: {
                 oper: "+",
-                0: "b"
+                0: variable("b")
             }
         },
         1: {
             oper: "=",
-            0: "a",
+            0: variable("a"),
             1: {
                 oper: "-",
-                0: "b"
+                0: variable("b")
             }
         }
     }
@@ -404,19 +398,19 @@ store.addEquivalence({
         oper: "=",
         0: {
             oper: ";",
-            0: "a",
-            1: "b"
+            0: variable("a"),
+            1: variable("b")
         },
-        1: "c"
+        1: variable("c")
     },
     1: {
         oper: ";",
         0: {
             oper: "=",
-            0: "a",
-            1: "c"
+            0: variable("a"),
+            1: variable("c")
         },
-        1: "b"
+        1: variable("b")
     }
 });
 
