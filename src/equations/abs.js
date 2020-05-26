@@ -1,4 +1,5 @@
 import store from "./store";
+import { int, variable } from "../types";
 
 // |a| = a
 store.addEquation({
@@ -9,7 +10,7 @@ store.addEquation({
     },
     1: int(variable("a"))
 },
-"Evaluate absolute value"
+                  "Evaluate absolute value"
 );
 
 // |-a| = a

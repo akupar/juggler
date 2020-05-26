@@ -2,7 +2,7 @@
  * Equations with function composition operator ∘.
  **/
 
-import { auto } from "../types";
+import { auto, variable } from "../types";
 
 import store from "./store";
 

@@ -1,5 +1,5 @@
 import store from "./store";
-import { auto } from "../types";
+import { auto, variable } from "../types";
 
 // (a + b) × (c + d) = ((a × c) + (a × d)) + ((b × c) + (b × d))
 store.addEquation({

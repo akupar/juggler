@@ -1,5 +1,5 @@
 import store from "./store";
-import { auto, func, symbol } from "../types";
+import { auto, func, symbol, variable } from "../types";
 
 // a = a rad
 store.addEquation({

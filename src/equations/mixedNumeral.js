@@ -1,13 +1,14 @@
 import store from "./store";
 import { setDisplayTextAndReturn } from "../util/functions";
+import { int, variable } from "../types";
 
 // epämurtoluku => sekaluku
 store.addEquation({
     oper: "->",
     0: {
         oper: "/",
-        0: int(variable("a"),
-        1: int(variable("b")
+        0: int(variable("a")),
+        1: int(variable("b"))
     },
     1: setDisplayTextAndReturn("whole + (a - whole * b) / b", function ({ a, b }) {
         const whole = Math.floor(a / b);
