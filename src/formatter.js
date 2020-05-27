@@ -75,7 +75,10 @@ export function deformat(elem) {
     return obj;
 }
 
-function createVariableBlock(expr) {
+/**
+ * Block representing variable.
+ **/
+export function createVariableBlock(expr) {
     const block = createBlock("mi", expr.replace(/^\((.*)\)$/, "$1"), expr);
     block.classList.add("variable");
 
@@ -99,7 +102,6 @@ export function format(expr) {
     const formatter = equation ? equation[1] : defaultFormatter;
 
     const elem = formatter(vars, expr);
-    console.log("ODNE");
 
     return elem;
 }

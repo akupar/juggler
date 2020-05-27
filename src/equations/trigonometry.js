@@ -1,5 +1,6 @@
 import store from "./store";
-import { auto, func, symbol, variable } from "../types";
+import { constant } from "../constants";
+import { auto, func, variable } from "../types";
 
 // a = a rad
 store.addEquation({
@@ -28,7 +29,7 @@ store.addEquation({
             0: variable("a"),
             1: {
                 oper: "/",
-                0: symbol("π"),
+                0: constant("π"),
                 1: auto(180)
             }
         }
@@ -50,7 +51,7 @@ store.addEquation({
             1: {
                 oper: "/",
                 0: auto(180),
-                1: symbol("π")
+                1: constant("π")
             }
         }
     }

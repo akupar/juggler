@@ -219,10 +219,7 @@ store.addEquation({
     0: {
         oper: "×",
         0: variable("a"),
-        1: {
-            item: "(val)",
-            0: auto(1)
-        }
+        1: auto(1)
     },
     1: variable("a")
 },

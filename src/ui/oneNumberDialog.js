@@ -31,6 +31,8 @@ export function createDialog(oper, vars, varA, inputSymbol) {
         $number.data("timeoutHandle", setTimeout(() => { $(this).change(); }, 250));
     });
 
+    let returnValue = false;
+    
     const $form = $("#dialog-one-number").find("form");
 
     const deferred = $.Deferred();    
@@ -39,8 +41,8 @@ export function createDialog(oper, vars, varA, inputSymbol) {
 
         vars["a"] = $number.val();
         $dialog.dialog( "close" );
-
-        deferred.resolve(true);
+        returnValue = true;
+        
     });
     
     
@@ -54,12 +56,13 @@ export function createDialog(oper, vars, varA, inputSymbol) {
                 }
             },
             Cancel: function() {
-                deferred.resolve(false);
+                returnValue = false;
                 $dialog.dialog( "close" );
             }
         },
         close: function() {
             $number.removeClass( "ui-state-error" );
+            deferred.resolve(returnValue);
         }
     });
     

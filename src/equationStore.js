@@ -10,12 +10,12 @@ import {
 
 
 
-export default function EquationStore(onMember, pathMember) {
+export default function EquationStore(onMember) {
     this.buckets = {};
 
 
-    function getPath(expr) {
-        const path = [];
+    function getPath(expr, pathMember) {
+        const path = [pathMember];
 
         let current = expr;
         do {
@@ -37,9 +37,25 @@ export default function EquationStore(onMember, pathMember) {
     }
 
     this.getAddress = function(expr) {
-        return getPath(expr).join(".");
+        const path0 = getPath(expr, 0);
+        const path1 = getPath(expr, 1);
+
+        if ( path0.length === 1 && path1.length === 1 ) {
+            return "";
+        } else if ( path1.length > path0.length ) {
+            return path1.join(".");
+        } else {
+            return path0.join(".");
+        }
     };
 
+    function getPaths(expr) {
+        const path0 = getPath(expr, 0);
+        const path1 = getPath(expr, 1);
+
+        return [ path0, path1 ];
+    }
+    
     /**
      * Checks the equation can be used from 0 to 1 direction.
      * Returns false if right side has extra variables, otherwise true.
@@ -51,11 +67,10 @@ export default function EquationStore(onMember, pathMember) {
         
         return true;
     }
-
+    
     
     this.addDirectedEquation = function(eq, desc, where) {
         const bucketAddress = this.getAddress(eq[0]);
-        //console.log("AD:", bucketAddress);
         if ( ! this.buckets[bucketAddress] ) {
             this.buckets[bucketAddress] = [];
         }
@@ -66,7 +81,9 @@ export default function EquationStore(onMember, pathMember) {
         copy.__where = where;
         
         this.buckets[bucketAddress].push(copy);
-        //console.log("ADDED TO (", bucketAddress, ") :", copy);
+        if ( this.debug ) {
+            console.log("ADDED TO (", bucketAddress, ") :", copy);
+        }
     };
 
     
@@ -197,7 +214,7 @@ export default function EquationStore(onMember, pathMember) {
     };
 
     this.addEquivalence = function (equivalence, desc1, desc2, where) {
-        console.assert(equivalence.oper === "<=>" || equivalence.oper === "->", "Error in equivalence");
+        console.assert(equivalence.oper === "<=>" || equivalence.oper === "->", "Wrong equivalence operator");
         //console.assert(equivalence[0].oper === "=", "Cant have other than = second level operator in equivalence:" + JSON.stringify(equivalence, where));
         //console.assert(equivalence[1].oper === "=", "Cant have other than = second level operator in equivalence:" + JSON.stringify(equivalence), where);
         
@@ -226,6 +243,7 @@ export default function EquationStore(onMember, pathMember) {
         let address;
         while ( path.length > 0 ) {
             address = path.join(".");
+            //console.log("address:", address);
             if ( this.buckets[address] ) {
                 buckets.push(this.buckets[address]);
                 if ( this.debug ) {
@@ -236,9 +254,9 @@ export default function EquationStore(onMember, pathMember) {
         }
 
         if ( this.buckets[""] ) {//&& address !== "" ) {
-            buckets.push(this.buckets[""]);
+            buckets.push(this.buckets["0."]);
             if ( this.debug ) {            
-                console.log("INCLUDING:", "");
+                console.log("INCLUDING:", "0.");
             }
         }
 
@@ -247,27 +265,29 @@ export default function EquationStore(onMember, pathMember) {
 
     
     this.allMatches = function (expression) {
-        const path = getPath(expression);
+        const [ path0, path1 ] = getPaths(expression);
 
-//        if ( JSON.stringify(expression).indexOf("0.955414") > -1 ) {
-//            this.debug = true;
-//        } else {
-//            this.debug = false;
-//        }
+        //        if ( JSON.stringify(expression).indexOf("0.955414") > -1 ) {
+        //            this.debug = true;
+        //        } else {
+        //            this.debug = false;
+        //        }
 
-//         if ( this.getAddress(expression).startsWith("+.+.+") ) {
-//             this.debug = true;
-//         } else {
-//             this.debug = false;
-//         }
+        //         if ( this.getAddress(expression).startsWith("+.+.+") ) {
+        //             this.debug = true;
+        //         } else {
+        //             this.debug = false;
+        //         }
         
         if ( this.debug ) {
-            console.log("allMatches: Expression:", JSON.stringify(expression), "Path:", path);
+            console.log("allMatches: Expression:", JSON.stringify(expression), "Path:", path0, path1);
             //console.log("path:", path);
         }
 
 
-        const equations = this.getEquations(path);
+        const equations0 = this.getEquations(path0);
+        const equations1 = this.getEquations(path1);
+        const equations = equations0.concat(equations1);
 
         if ( !equations ) {
             return [];
@@ -282,13 +302,9 @@ export default function EquationStore(onMember, pathMember) {
 
             let score = match(equation[0], expression, vars);
             if ( this.debug ) {
-                console.log("allMatches:", this.name, "Equation:", JSON.stringify(equation), "score:", score);
+                console.log("allMatches:", this.name, "Equation:", JSON.stringify(equation), "score:", score, "where:", where);
             }
             
-
-            if ( this.debug ) {
-                console.log("allMatches:", this.name, "where:", where);
-            }
 
             if ( score > 0 && where && !where(vars) ) {
                 score = 0;
@@ -310,6 +326,9 @@ export default function EquationStore(onMember, pathMember) {
     
 
     this.bestMatch = function (expression) {
+        if ( this.debug ) {
+            console.log("Best match for:", expression);
+        }
         const matches = this.allMatches(expression);
         if ( matches.length > 0 ) {
             if ( this.debug ) {

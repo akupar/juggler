@@ -140,9 +140,9 @@ store.addEquation({
 store.addEquation2({
     0: {
         oper: "+",
-        0: int("a"),
+        0: int(variable("a")),
         1: variable("b"),
-        "?_approx": "approx"
+        "?_approx": variable("approx")
     },
     1: function c({ a, b }) {
         return {

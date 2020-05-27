@@ -31,7 +31,7 @@ describe('equationStore', function() {
             expected.__description = "Toggle plus sign";
             expected.__where = undefined;
             
-            assert.deepEqual(expected, store.buckets["+"][0]);
+            assert.deepEqual(expected, store.buckets["0.+"][0]);
         });
 
 
@@ -86,8 +86,8 @@ describe('equationStore', function() {
             expected2.__description = "Muuta lukujonoksi";
             expected2.__where = undefined;
 
-            assert.deepEqual(expected1, store.buckets["+.+.+"][0]);
-            assert.deepEqual(expected2, store.buckets["..."][0]);            
+            assert.deepEqual(expected1, store.buckets["0.+.+.+"][0]);
+            assert.deepEqual(expected2, store.buckets["1...."][0]);            
         });
 
     });
@@ -160,7 +160,7 @@ describe('equationStore', function() {
             
             
             assert.deepEqual(matches[0], {
-                equation: store.buckets["+"][0],
+                equation: store.buckets["0.+"][0],
                 vars: {
                     "x": auto(5)
                 },

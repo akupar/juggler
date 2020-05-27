@@ -55,6 +55,7 @@ function createDialog(oper, vars, varA, varB, varC, number1Control, number2Contr
 
     const $form = $dialog.find("form");
 
+    let returnValue = false;
     const deferred = $.Deferred();    
     $form.on("submit", function (e) {
         console.log("submit");
@@ -62,9 +63,8 @@ function createDialog(oper, vars, varA, varB, varC, number1Control, number2Contr
 
         vars["a"] = $number1.val();
         vars["b"] = $number2.val();
+        returnValue = true;
         $dialog.dialog( "close" );
-
-        deferred.resolve(true);
     });
     
     $number1.on("keypress", function(event) { 
@@ -86,20 +86,20 @@ function createDialog(oper, vars, varA, varB, varC, number1Control, number2Contr
                 console.log("OK");                
                 if ( $number1.is(":valid") && $number2.is(":valid") ) {
                     console.log("gonna submit");
-                    $form.submit();        
+                    $form.submit();
                 }
             },
             Cancel: function() {
-                console.log("Cancel");                
+                console.log("Cancel");
+                returnValue = false;
                 $dialog.dialog( "close" );
-                deferred.resolve(false);
             }
         },
         close: function() {
             console.log("close");
             $number1.removeClass( "ui-state-error" );
             $number2.removeClass( "ui-state-error" );
-            deferred.resolve(false);            
+            deferred.resolve(returnValue);            
         }
     });
 

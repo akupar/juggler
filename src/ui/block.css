@@ -10,19 +10,30 @@
     background-color: rgba(255, 255, 255, 0.5);
 }
 
-.block:hover {
+#canvas .block:hover {
     background-color: rgba(255, 255, 255, 0.9);
 }
 
+#transformSuggestions .suggestion:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+
 .selected {
     /*border: dashed blue 2px !important;*/
-    background: lightblue !important;
+    /*background: lightblue !important;*/
+    background: url('./selection.png');
 }
 
 
 .integer {
     background-color: lightgoldenrodyellow;
     border: solid darkyellow 1px;
+}
+
+.approx {
+    background-color: hsl(45, 100%, 70%);
+    border: solid orange 1px;
 }
 
 .symbol {

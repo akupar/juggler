@@ -15,7 +15,7 @@ import { format } from "../formatter";
 import formatters from "./store";
 import { $mathml } from "../ui/mathml";
 import { createBlock } from "../ui/block";
-import { bind } from "../util";
+import { bind, isVariable, getBasenameOfVariable } from "../util";
 import { symbol, variable } from "../types";
 
 //
@@ -54,7 +54,7 @@ formatters.addEquation({
         0: variable("a"),
     },
     1: ({ a }) => {
-        let aElem = a,
+        let aElem = isVariable(a) ? getBasenameOfVariable(a) : a,
             self = createBlock(
                 (Number.isInteger(a) ? "mn" : "mi"),
                 [ aElem ],
@@ -64,6 +64,9 @@ formatters.addEquation({
                 }
             );
 
+        if ( isVariable(a) ) {
+            self.classList.add("variable");
+        }
         self.classList.add("integer");
         return self;
     }
@@ -76,13 +79,14 @@ formatters.addEquation({
 formatters.addEquation2({
     0: variable("a"),
     1: ({ a }) => {
-        console.log("display formatter:", a);
-        
-        return createBlock(
+        const self = createBlock(
             "mn",
             [ a._approx.toString().substring(0, 5) + "..." ],
             a
         );
+
+        self.classList.add("approx");
+        return self;
     },
     where: ({ a }) => {
         return ("_approx" in a) && (("display" in a) && a.display === ":approx");

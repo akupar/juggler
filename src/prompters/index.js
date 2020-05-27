@@ -8,9 +8,13 @@ import EquationStore from "../equationStore";
 
 import fromTwoThirdDialog from "../ui/fromTwoThirdDialog";
 import oneNumberDialog from "../ui/oneNumberDialog";
+import { variable } from "../types";
 
 const prompters = new EquationStore("oper", 0);
 
+//prompters.debug = true;
+
+window.prompters = prompters;
 
 prompters.addEquation({
     oper: "=>",
@@ -37,17 +41,17 @@ prompters.addEquation({
         oper: "&rarr;",
         0: {
             item: "(val)",
-            0: "c"
+            0: variable("c")
         },
         1: {
             oper: "+",
             0: {
                 item: "(val)",
-                0: "a"
+                0: variable("a")
             },
             1: {
                 item: "(val)",
-                0: "b"
+                0: variable("b")
             }
         }
     },
@@ -65,17 +69,17 @@ prompters.addEquation({
         oper: "&rarr;",
         0: {
             item: "(val)",
-            0: "c"
+            0: variable("c")
         },
         1: {
             oper: "-",
             0: {
                 item: "(val)",
-                0: "a"
+                0: variable("a")
             },
             1: {
                 item: "(val)",
-                0: "b"
+                0: variable("b")
             }
         }
     },
@@ -93,17 +97,17 @@ prompters.addEquation({
         oper: "&rarr;",
         0: {
             item: "(val)",
-            0: "c"
+            0: variable("c")
         },
         1: {
             oper: "×",
             0: {
                 item: "(val)",
-                0: "a"
+                0: variable("a")
             },
             1: {
                 item: "(val)",
-                0: "b"
+                0: variable("b")
             }
         }
     },
@@ -120,17 +124,17 @@ prompters.addEquation({
         oper: "&rarr;",
         0: {
             item: "(val)",
-            0: "c"
+            0: variable("c")
         },
         1: {
             oper: "/",
             0: {
                 item: "(val)",
-                0: "a"
+                0: variable("a")
             },
             1: {
                 item: "(val)",
-                0: "b"
+                0: variable("b")
             }
         }
     },
@@ -147,17 +151,17 @@ prompters.addEquation({
         oper: "&rarr;",
         0: {
             item: "(val)",
-            0: "c"
+            0: variable("c")
         },
         1: {
             oper: "^",
             0: {
                 item: "(val)",
-                0: "a"
+                0: variable("a")
             },
             1: {
                 item: "(val)",
-                0: "b"
+                0: variable("b")
             }
         }
     },
@@ -174,17 +178,17 @@ prompters.addEquation({
         oper: "&rarr;",
         0: {
             item: "(val)",
-            0: "c"
+            0: variable("c")
         },
         1: {
             oper: "(root)",
             0: {
                 item: "(val)",
-                0: "a"
+                0: variable("a")
             },
             1: {
                 item: "(val)",
-                0: "b"
+                0: variable("b")
             }
         }
     },

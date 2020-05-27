@@ -510,7 +510,7 @@ store.addEquation2({
 store.addEquation2({
     0: {
         oper: "/",
-        0: int("a"),
+        0: int(variable("a")),
         1: variable("b"),
         "?_approx": variable("approx")
     },

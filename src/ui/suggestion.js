@@ -35,12 +35,12 @@ export async function handlePickTransform() {
         const prompt = prompterEquation ? prompterEquation[1] : defaultPrompt;
         
         if ( !await prompt(vars, unbound) ) {
-            //console.log("prompt returned: false");
+            console.log("prompt returned: false");
             return;
         }
-        //console.log("VARS:", vars);
+        console.log("VARS:", vars);
         apply(selectedExpression, vars);
-        //console.log("APPLIED:", selectedExpression);
+        console.log("APPLIED:", selectedExpression);
     }
     
     const result = transform2(transformEquation[0], transformEquation[1], selectedExpression, vars);
