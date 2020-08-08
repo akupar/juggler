@@ -6,6 +6,8 @@ import {
     selectBlock
 } from "./block";
 
+import expressionTree from "../expressionTree";
+
 
 /* function setVariable(vars) {
  *     const root = document.getElementById("canvas").firstChild;
@@ -85,6 +87,9 @@ function getEquationOfSelected() {
  * Replace selected part of equation with `equation`.
  **/
 function replaceSelectionWithEquation(equation) {
+    // Add previous to history.
+    expressionTree.add(getEquation());    
+
     const equationElem = format(equation);
     console.assert(equationElem, "EI equation elementiä");
 
@@ -102,13 +107,19 @@ function replaceSelectionWithEquation(equation) {
 
     window.undoBuffer.push(getEquation());
 
+
     
     selectBlock.bind(equationElem)();
 
+    //equationElem.scrollIntoview();
+    console.log("SCROLL HEGHT:", document.body.scrollHeight);
+    console.log("SCROLL HEGHT:", document.getElementById("content").scrollHeight);
+    window.scrollTo(0, document.getElementById("content").scrollHeight);
 }
 
 export default {
     getEquation,
+    getSelectedElement,
     setEquation,
     getEquationOfSelected,
     replaceSelectionWithEquation

@@ -5,7 +5,18 @@ import { format } from "../formatter";
 let $table = $();
 
 $(document).ready(function () {
-    $table = $("#transformSuggestions > math > mtable");
+    $table = $("#suggestions > math > mtable");
+
+    $( "#suggestions" ).dialog({
+        modal: false,
+        width: "auto",
+        resizable: true,
+        title: "Suggestions",
+        buttons: {
+        },
+        close: function() {
+        }
+    });
 
 });
 

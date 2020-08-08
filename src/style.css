@@ -1,8 +1,62 @@
+body {
+    font-size: 100%;
+    margin: 0;
+}
+
+h1 {
+    font-size: 2.25em;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.3125em;
+}
+
+h4 {
+    font-size: 1.125em;
+}
+
+h5 {
+    font-size: 1em;
+}
+
+.header {
+  padding: 10px 16px;
+  background: white;
+  border-bottom: solid black 1px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+}
+
+.right-panel {
+    position: absolute;
+    right: 10px;
+    border: solid black 1px;
+}
+
+.sticky + #content {
+    padding-top: 120px;
+}
+
 #canvas {
     text-align: center;
 }
 
-#transformSuggestions {
+#expressionTree {
+    text-align: center;
+    background-color: lightgrey;
+}
+
+#suggestions {
     margin: 0 auto;
     width: max-content;
     display: block;
@@ -10,6 +64,8 @@
     background-color: ivory;
     padding: 1ex;
     /*font-size: 70%;*/
+    max-height: 100vh;
+    height: 50vh !important;
     
 }
 
@@ -46,8 +102,16 @@ h1, h2, h3, h4, h5, h6 {
     font-family: sans-serif;
 }
 
-h1 {
-    text-align: center;
-    font-variant: oblique;
+
+.ui-dialog {
+    max-height: 50vh;
 }
 
+#content {
+    padding-bottom: 50vh;
+}
+
+
+#status-display {
+    display: none;
+}

@@ -1,5 +1,7 @@
 import $ from "jquery";
 import "./debug.css";
+import { expressionToString } from "./debug-keySort";
+import { deformat } from "../formatter";
 
 export function showBucketData(buckets) {
     console.assert(buckets !== undefined, "Undefined");
@@ -19,29 +21,28 @@ export function showBucketData(buckets) {
 }
 
 
-
-export function showExpression(elem, expr) {
+export function showExpression(elem) {
+    const expr = deformat(elem);
     let bucket = "";
     
     let elemNo = "";
 
-    let elemData;
+    let expression;
     if ( elem ) {
         elemNo = "#" + elem.id;
-        elemData = $(elem).attr("expr");
+        const data = $(elem).attr("expr");
+        expression = JSON.parse(data);
     }
 
 
-
-
     let text = "";
-    if ( elemData ) {
-        text = JSON.stringify(JSON.parse(elemData), null, 2);
+    if ( expression ) {
+        text = expressionToString(expression);
     }
     
     let expandedData = "";
     if ( expr ) {
-        expandedData = JSON.stringify(expr, null, 2);
+        expandedData = expressionToString(expr);
         bucket = window.equations.getAddress(expr);
     }
     

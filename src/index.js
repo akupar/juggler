@@ -1,12 +1,16 @@
 import $ from "jquery";
 import "./style.css";
 import { auto } from "./types";
+import "./expressionTree";
+import "./ui/expressionTree";
+
 import userSymbols from "./ui/userSymbols";
 import undoManager from "./ui/undoManager";
 import canvas from "./ui/canvas";
 import debug from "./ui/debug";
 import inputExpressionDialog from "./ui/inputExpressionDialog";
 import shuntingyard from "./shuntingyard";
+
 
 window.shuntingyard = shuntingyard;
 
@@ -16,6 +20,25 @@ import {
     getPreviousBlock,
     selectBlock
 } from "./ui/block";
+
+$(document).ready(function () {
+    var header = document.getElementById("main-header");
+    var sticky = header.offsetTop;
+    
+    function fixHeader() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+            } else {
+                header.classList.remove("sticky");
+                }
+        
+        }
+    window.onscroll = fixHeader;
+});
+
+
+
+
 
 function getSelectedBlock() {
     const selecteds = document.getElementsByClassName("selected");
@@ -120,8 +143,6 @@ $(document).ready(function () {
             }
         }
     };
-
-    debug.showExpression(null, input);
 
     canvas.setEquation(input);
     console.log("main done");
